@@ -1,0 +1,144 @@
+import React, { useState } from 'react';
+import type { FormEvent } from 'react';
+import { Link } from 'react-router-dom';
+
+interface RegisterData {
+    username: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
+
+/**
+ * Komponentti rekisteröitymistä varten.
+ * Käsittelee käyttäjän rekisteröitymisen ja mahdollisen navigoinnin kirjautumissivulle.
+ * @returns JSX.Element
+ */
+const Register: React.FC = () => {
+    const [formData, setFormData] = useState<RegisterData>({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+    });
+    const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+
+    /**
+     * Tarkistaa käyttäjän syöttämät tiedot.
+     * @returns boolean: true jos tiedot ovat kelvolliset, muuten false
+     */
+    const validateData = (): boolean => {
+        if (formData.password !== formData.confirmPassword) {
+            setError("Salasanat eivät vastaa toisiaan");
+            return false;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            setError("Virheellinen sähköpostiosoite");
+            return false;
+        }
+
+        return true;
+    };
+
+    /**
+     * Käsittelee lomakkeen lähetyksen.
+     * @param {FormEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
+     */
+    const handleRegister = async(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setError('');
+
+        if (!validateData()) {
+            return;
+        }
+
+        setLoading(true);
+
+        // TODO: Toteuta rekisteröitymislogiikka
+        setTimeout(() => {
+            console.log("Rekisteröityminen onnistui:", formData);
+            setLoading(false);
+            // Navigoi kirjautumissivulle rekisteröitymisen jälkeen
+        }, 2000);
+    };
+
+    return (
+        <div className="register-page">
+            <div className="register-header">
+                <h1 className="register-title">Liity nyt NotiG-käyttäjäksi</h1>
+            </div>
+
+            <form className="register-form" onSubmit={handleRegister}>
+                <div className="form-group">
+                    <label className="register-label">Käyttäjänimi</label>
+                    <input 
+                        type="text"
+                        value={formData.username}
+                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                        className="register-input"
+                        placeholder="Käyttäjänimi"
+                        minLength={2}
+                        disabled={loading}
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label className="register-label">Sähköposti</label>
+                    <input 
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        className="register-input"
+                        placeholder="example@email.com"
+                        disabled={loading}
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label className="register-label">Salasana</label>
+                    <input
+                        type="password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                        className="register-input"
+                        placeholder="Salasana"
+                        minLength={6}
+                        disabled={loading}
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label className="register-label">Vahvista salasana</label>
+                    <input
+                        type="password"
+                        value={formData.confirmPassword}
+                        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                        className="register-input"
+                        placeholder="Vahvista salasana"
+                        minLength={6}
+                        disabled={loading}
+                        required
+                    />
+                </div>
+
+                {error && <p className="error-message">{error}</p>}
+
+                <button type="submit" className="register-button">
+                    {loading ? <i className="fi fi-br-rotate-right"></i> : "Rekisteröidy"}
+                </button>
+            </form>
+
+            <div className="register-footer">
+                <p className="login-prompt">Onko sinulla jo tili? Kirjaudu <Link to="/login">tästä</Link></p>
+            </div>
+        </div>
+    );
+}
+
+export default Register;
