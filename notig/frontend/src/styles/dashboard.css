@@ -1,0 +1,246 @@
+/* Hallintapaneelin tyylit */
+
+.notig-dashboard {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background-color: #2c2d2d;
+}
+
+.dashboard-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.dashboard-main {
+    padding: 2rem;
+    flex: 1;
+    background-color: #2c2d2d;
+    overflow-y: auto;
+}
+
+.content-header {
+    display: flex;
+    margin-bottom: 2rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.create-note-button {
+    display: flex;
+    padding: 0.875rem 1.25rem;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, orangered 0%, lightsalmon 100%);
+    color: whitesmoke;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(orangered, 0.3);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.create-note-button:hover {
+    box-shadow: 0 6px 20px rgba(orangered, 0.4);
+    transform: translateY(-2px);
+}
+
+.create-note-button:active {
+    transform: translateY(0);
+}
+
+.create-note-button i {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* Tyylit, kun ei ole muistiinpanoja */
+.empty-state {
+    display: flex;
+    padding: 4rem 2rem;
+    align-items: center;
+    justify-self: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.empty-state-illustration {
+    margin-bottom: 2rem;
+}
+
+/* SVG-kuvituksen tyylit */
+svg {
+    width: 200px;
+    height: 200px;
+}
+
+rect {
+    x: 40;
+    y: 30;
+    width: 120;
+    height: 140;
+    rx: 8;
+    stroke: darkslategray;
+    stroke-width: 2;
+    fill: none;
+}
+
+line:first-child {
+    stroke: dimgray;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+line:nth-child(2) {
+    stroke: dimgray;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+line:last-child {
+    stroke: dimgray;
+    stroke-width: 2;
+    stroke-linecap: round;
+}
+
+circle {
+    cx: 100;
+    cy: 130;
+    r: 20;
+    fill: orangered;
+    opacity: 0.3;
+}
+
+path {
+    d: M 100 120 L 100 140 M 90 130 L 110 130;
+    stroke: white;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+}
+
+.empty-state-title {
+    margin-bottom: 0.75rem;
+    color: whitesmoke;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.empty-state-message {
+    margin-bottom: 2rem;
+    color: lightgray;
+    font-size: 16px;
+}
+
+/* Muistiinpanoluettelon tyylit */
+.notes-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* Yksittäisen muistiinpanonkortin tyylit */
+.note-card {
+    display: flex;
+    padding: 1.5rem;
+    min-height: 200px;
+    flex-direction: column;
+    background-color: #1e1f1f;
+    border: 1px solid darkslategray;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.note-card:hover {
+    border-color: dimgray;
+    box-shadow: 0 8px 24px rgba(black, 0.4);
+    transform: translateY(-4px);
+}
+
+.note-card:active {
+    transform: translateY(-2px);
+}
+
+.note-card-header {
+    display: flex;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.note-title {
+    display: -webkit-box;
+    margin: 0;
+    flex: 1;
+    color: whitesmoke;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.note-actions {
+    margin-left: 0.5rem;
+    flex-shrink: 0;
+}
+
+.note-button {
+    display: flex;
+    padding: 0.25rem;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: gray;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.note-button:hover {
+    background-color: #2c2d2d;
+    color: lightgray;
+}
+
+.note-button:active {
+    background-color: darkslategray;
+}
+
+.note-button i {
+    line-height: 1;
+}
+
+.note-card-preview {
+    display: -webkit-box;
+    margin: 0 0 auto 0;
+    flex: 1;
+    color: lightgray;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.note-card-footer {
+    display: flex;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid darkslategray;
+}
+
+.note-date {
+    color: gray;
+    font-size: 12px;
+    font-weight: 500;
+}

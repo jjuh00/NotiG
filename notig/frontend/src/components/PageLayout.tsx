@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Note } from '../types/Note.ts';
+import "../styles/page-layout.css";
 
 // Header-propsit
 interface HeaderProps {
@@ -44,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }: HeaderProps) => {
     return (
         <header className="notig-header">
             <div className="header-left">
-                <h1 className="app-title">NotiG</h1>
+                <h1 className="notig-title">NotiG</h1>
             </div>
 
             <div className="header-center">

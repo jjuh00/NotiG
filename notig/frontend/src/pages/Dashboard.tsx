@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Note } from '../types/Note.ts';
 import { Header, Sidebar, Footer } from '../components/PageLayout.tsx';
+import "../styles/dashboard.css";
 
 /**
  * Hallintasivu-komponentti.
@@ -79,13 +80,13 @@ const Dashboard: React.FC = () => {
                     {notes.length === 0 ? (
                         <div className="empty-state">
                             <div className="empty-state-illustration">
-                                <svg className="illustration">
-                                    <rect className="illustration-rect" />
-                                    <line className="illustration-line-1" />
-                                    <line className="illustration-line-2" />
-                                    <line className="illustration-line-3" />
-                                    <circle className="illustration-circle" />
-                                    <path className="illustration-path" />
+                                <svg>
+                                    <rect />
+                                    <line x1="60" y1="60" x2="140" y2="60" />
+                                    <line x1="60" y1="80" x2="140" y2="80" />
+                                    <line x1="60" y1="100" x2="120" y2="100" />
+                                    <circle />
+                                    <path />
                                 </svg>
                             </div>
                             <h2 className="empty-state-title">Ei vielä muistiinpanoja</h2>
