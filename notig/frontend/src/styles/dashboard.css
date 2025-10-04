@@ -76,9 +76,7 @@ svg {
     height: 200px;
 }
 
-rect {
-    x: 40;
-    y: 30;
+svg rect {
     width: 120;
     height: 140;
     rx: 8;
@@ -87,19 +85,19 @@ rect {
     fill: none;
 }
 
-line:first-child {
+line:first-of-type {
     stroke: dimgray;
     stroke-width: 2;
     stroke-linecap: round;
 }
 
-line:nth-child(2) {
+line:nth-last-of-type(2) {
     stroke: dimgray;
     stroke-width: 2;
     stroke-linecap: round;
 }
 
-line:last-child {
+line:last-of-type {
     stroke: dimgray;
     stroke-width: 2;
     stroke-linecap: round;
@@ -114,7 +112,6 @@ circle {
 }
 
 path {
-    d: M 100 120 L 100 140 M 90 130 L 110 130;
     stroke: white;
     stroke-width: 2.5;
     stroke-linecap: round;
