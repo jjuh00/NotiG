@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { loginUser } from "./api/authenticationService.ts";
 import "./styles/login.css";
 
 /**
@@ -9,6 +10,7 @@ import "./styles/login.css";
  * @returns JSX.Element
  */
 const App: React.FC = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
@@ -16,19 +18,27 @@ const App: React.FC = () => {
 
     /**
      * Käsittelee lomakkeen lähetyksen.
-     * @param e - FormEvent<HTMLFormElement>
+     * @param {FormEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
      */
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
-        // TODO: Toteuta kirjautumislogiikka täällä
-        setTimeout(() => {
-            console.log('Kirjautuminen onnistui:', { email, password });
+        try {
+            const response = await loginUser({ email, password });
+
+            if (response.status === "success") {
+                navigate("/dashboard");
+            } else {
+                setError("Kirjautuminen epäonnistui: " + response.message);
+            }
+        } catch (error: any) {
+            console.error("Kirjautumisvirhe:", error);
+            setError(error.response?.data?.message || "Kirjautuminen epäonnistui");
+        } finally {
             setLoading(false);
-            // Navigoi pääsivulle kirjautumisen jälkeen
-        }, 2000);
+        }
     };
 
     return (

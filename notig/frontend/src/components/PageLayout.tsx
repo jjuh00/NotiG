@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Note } from '../types/Note.ts';
+import type { Note } from '../../types/Note.ts';
 import "../styles/page-layout.css";
 
 // Header-propsit

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Note } from '../types/Note.ts';
+import type { Note } from '../../types/Note.ts';
 import { Header, Sidebar, Footer } from '../components/PageLayout.tsx';
 import "../styles/dashboard.css";
 
@@ -50,7 +50,7 @@ const Dashboard: React.FC = () => {
     /**
      * Muotoilee päivämäärän luettavampaan muotoon.
      * @param {string | Date} date - Muotoiltava päivämäärä
-     * @return {string} Muotoiltu päivämäärä
+     * @returns {string} Muotoiltu päivämäärä
      */
     const formatDate = (date: string | Date): string => {
         return new Intl.DateTimeFormat("fi-FI", {

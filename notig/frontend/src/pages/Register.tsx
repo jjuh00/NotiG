@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { registerUser } from "../api/authenticationService.ts";
 import "../styles/register.css";
 
 interface RegisterData {
@@ -16,6 +17,7 @@ interface RegisterData {
  * @returns JSX.Element
  */
 const Register: React.FC = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<RegisterData>({
         username: '',
         email: '',
@@ -27,7 +29,7 @@ const Register: React.FC = () => {
 
     /**
      * Tarkistaa käyttäjän syöttämät tiedot.
-     * @returns boolean: true jos tiedot ovat kelvolliset, muuten false
+     * @returns {boolean} - true jos tiedot ovat kelvolliset, muuten false
      */
     const validateData = (): boolean => {
         if (formData.password !== formData.confirmPassword) {
@@ -58,12 +60,24 @@ const Register: React.FC = () => {
 
         setLoading(true);
 
-        // TODO: Toteuta rekisteröitymislogiikka
-        setTimeout(() => {
-            console.log("Rekisteröityminen onnistui:", formData);
+        try {
+            const response = await registerUser({
+                username: formData.username,
+                email: formData.email,
+                password: formData.password
+            });
+
+            if (response.status === "created") {
+                navigate("/login");
+            } else {
+                setError("Rekisteröityminen epäonnistui: " + response.message);
+            }
+        } catch (error: any) {
+            console.error("Rekisteröitymisvirhe:", error);
+            setError(error.response?.data?.message || "Rekisteröityminen epäonnistui");
+        } finally {
             setLoading(false);
-            // Navigoi kirjautumissivulle rekisteröitymisen jälkeen
-        }, 2000);
+        }
     };
 
     return (
@@ -136,7 +150,7 @@ const Register: React.FC = () => {
             </form>
 
             <div className="register-footer">
-                <p className="login-prompt">Onko sinulla jo tili? Kirjaudu <Link to="/login">tästä</Link></p>
+                <p className="login-prompt">Onko sinulla jo tili? Kirjaudu <Link to="/">tästä</Link></p>
             </div>
         </div>
     );
