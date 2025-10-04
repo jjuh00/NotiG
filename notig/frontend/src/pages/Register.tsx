@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import "../styles/register.css";
 
 interface RegisterData {
     username: string;
@@ -68,11 +69,11 @@ const Register: React.FC = () => {
     return (
         <div className="register-page">
             <div className="register-header">
-                <h1 className="register-title">Liity nyt NotiG-käyttäjäksi</h1>
+                <h1 className="register-title">NotiG Rekisteröityminen</h1>
             </div>
 
             <form className="register-form" onSubmit={handleRegister}>
-                <div className="form-group">
+                <div className="register-group">
                     <label className="register-label">Käyttäjänimi</label>
                     <input 
                         type="text"
@@ -86,7 +87,7 @@ const Register: React.FC = () => {
                     />
                 </div>
 
-                <div className="form-group">
+                <div className="register-group">
                     <label className="register-label">Sähköposti</label>
                     <input 
                         type="email"
@@ -99,7 +100,7 @@ const Register: React.FC = () => {
                     />
                 </div>
 
-                <div className="form-group">
+                <div className="register-group">
                     <label className="register-label">Salasana</label>
                     <input
                         type="password"
@@ -113,7 +114,7 @@ const Register: React.FC = () => {
                     />
                 </div>
 
-                <div className="form-group">
+                <div className="register-group">
                     <label className="register-label">Vahvista salasana</label>
                     <input
                         type="password"
@@ -130,7 +131,7 @@ const Register: React.FC = () => {
                 {error && <p className="error-message">{error}</p>}
 
                 <button type="submit" className="register-button">
-                    {loading ? <i className="fi fi-br-rotate-right"></i> : "Rekisteröidy"}
+                    {loading ? "Rekisteröidytään..." : "Rekisteröidy"}
                 </button>
             </form>
 

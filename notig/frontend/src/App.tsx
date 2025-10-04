@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link } from 'react-router-dom';
+import "./styles/login.css";
 
 /**
  * Komponentti kirjautumista varten.
@@ -15,11 +16,11 @@ const App: React.FC = () => {
 
     /**
      * Käsittelee lomakkeen lähetyksen.
+     * @param e - FormEvent<HTMLFormElement>
      */
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
-
         setLoading(true);
 
         // TODO: Toteuta kirjautumislogiikka täällä
@@ -27,7 +28,7 @@ const App: React.FC = () => {
             console.log('Kirjautuminen onnistui:', { email, password });
             setLoading(false);
             // Navigoi pääsivulle kirjautumisen jälkeen
-        }, 6000);
+        }, 2000);
     };
 
     return (
@@ -37,39 +38,36 @@ const App: React.FC = () => {
             </div>
 
             <form className="login-form" onSubmit={handleLogin}>
-                <div className="input-group">
-                    <label className="input-label">Sähköposti</label>
+                <div className="login-group">
+                    <label className="login-label">Sähköposti</label>
                     <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="input-field"
+                        className="login-input"
                         placeholder="example@email.com"
                         disabled={loading}
                         required
                     />
                 </div>
 
-                <div className="input-group">
-                    <label className="input-label">Salasana</label>
+                <div className="login-group">
+                    <label className="login-label">Salasana</label>
                     <input
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="input-field"
+                        className="login-input"
                         placeholder="Salasana"
-                        minLength={6}
                         disabled={loading}
                         required
                     />
                 </div>
 
-                {error && (
-                    <div className="error-message">{error}</div>
-                )}
+                {error && <p className="error-message">{error}</p>}
 
                 <button type="submit" className="login-button" disabled={loading}>
-                    {loading ? <i className="fi fi-br-rotate-right"></i> : "Kirjaudu"}
+                    {loading ? "Kirjaudutaan..." : "Kirjaudu"}
                 </button>
             </form>
 

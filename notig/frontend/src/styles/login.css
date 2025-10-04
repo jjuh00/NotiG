@@ -1,0 +1,131 @@
+/* App.tsx -tyylit */
+
+.login-page {
+    display: flex;
+    padding: 2rem;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: linear-gradient(135deg, #1e1f1f 0%, #2c2d2d 100%);
+}
+
+.login-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.login-title {
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, orangered 0%, lightsalmon 100%);
+    color: whitesmoke;
+    background-clip: text;
+    font-size: 32px;
+    font-weight: 700;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.login-form {
+    padding: 2.5rem;
+    max-width: 420px;
+    width: 100%;
+    background-color: #2c2d2d;
+    border: 1px solid darkslategray;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(black, 0.4);
+}
+
+.login-group {
+    margin-bottom: 1.5rem;
+}
+
+.login-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: lightgray;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+.login-input {
+    padding: 0.875rem 1rem;
+    width: 100%;
+    background-color: #1e1f1f;
+    color: whitesmoke;
+    border: 2px solid darkslategray;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.25s ease;
+}
+
+/* Reunavärin ja varjon muutos, kun käyttäjä klikkaa kenttää */ 
+.login-input:focus {
+    border-color: orangered;
+    box-shadow: 0 0 0 3px rgba(orangered, 0.1);
+}
+
+/* Reunavärin muutos, kun käyttäjä vie hiiren kentän päälle */
+.login-input:hover:not(:disabled) {
+    border-color: darkgray;
+}
+
+.login-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login-input::placeholder {
+    color: gray;
+}
+
+.error-message {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background-color: rgba(salmon, 0.1);
+    color: salmon;
+    font-size: 14px;
+    border-left: 3px solid salmon;
+    border-radius: 4px;
+}
+
+.login-button {
+    margin-top: 1rem;
+    padding: 1rem;
+    width: 100%;
+    background: linear-gradient(135deg, orangered 0%, lightsalmon 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    letter-spacing: 0.03em;
+    transition: all 0.25s ease;
+}
+
+.login-button:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(orangered, 0.3);
+    transform: translateY(-2px);
+}
+
+.login-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.login-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.login-footer {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.register-prompt {
+    color: lightgray;
+    font-size: 15px;
+}
