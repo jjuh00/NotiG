@@ -145,7 +145,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notes, onNoteSelected }: SidebarProps
  * @returns JSX.Element
  */
 const Footer: React.FC = () => {
-    const appVersion = "1.1.0"; // TODO: Hae package.json:sta
+    const appVersion = "1.1.1"; // TODO: Hae package.json:sta
 
     return (
         <footer className="notig-footer">
