@@ -76,15 +76,6 @@ svg {
     height: 200px;
 }
 
-svg rect {
-    width: 120;
-    height: 140;
-    rx: 8;
-    stroke: darkslategray;
-    stroke-width: 2;
-    fill: none;
-}
-
 line:first-of-type {
     stroke: dimgray;
     stroke-width: 2;

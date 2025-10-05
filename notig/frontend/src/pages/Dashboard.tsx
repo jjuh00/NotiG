@@ -81,7 +81,6 @@ const Dashboard: React.FC = () => {
                         <div className="empty-state">
                             <div className="empty-state-illustration">
                                 <svg>
-                                    <rect x="40" y="30" />
                                     <line x1="60" y1="60" x2="140" y2="60" />
                                     <line x1="60" y1="80" x2="140" y2="80" />
                                     <line x1="60" y1="100" x2="120" y2="100" />
