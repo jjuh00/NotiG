@@ -82,7 +82,7 @@ line:first-of-type {
     stroke-linecap: round;
 }
 
-line:nth-last-of-type(2) {
+line:nth-of-type(2) {
     stroke: dimgray;
     stroke-width: 2;
     stroke-linecap: round;
