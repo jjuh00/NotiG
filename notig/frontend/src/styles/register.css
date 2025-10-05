@@ -64,7 +64,7 @@
     transition: all 0.25s ease;
 }
 
-/* Reunavärin ja varjon muutos, kun käyttäjä klikkaa kenttää */ 
+/* Reunavärin ja varjon muutos, kun käyttäjä on kentässä */ 
 .register-input:focus {
     border-color: lightcoral;
     box-shadow: 0 0 0 3px rgba(lightcoral, 0.1);

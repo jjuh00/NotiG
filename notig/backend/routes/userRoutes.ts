@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login } from "../controllers/userController.ts";
+import { register, login, updateProfile, getUserById } from "../controllers/userController.ts";
 
 const router = express.Router();
 
@@ -14,5 +14,15 @@ router.post("/api/authentication/register", register);
  * POST /api/authentication/login
  */
 router.post("/api/authentication/login", login);
+
+/**
+ * Käyttäjän tietojen päivitysreitti.
+ */
+router.put("/api/user/update", updateProfile);
+
+/**
+ * Reitti käyttäjätietojen hakemiseen ID:llä.
+ */
+router.get("/api/user/:id", getUserById);
 
 export default router;

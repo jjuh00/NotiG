@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { loginUser } from "./api/authenticationService.ts";
+import { loginUser } from './api/authenticationService.ts';
+import useUser from './hooks/useUser.ts';
 import "./styles/login.css";
 
 /**
@@ -11,6 +12,7 @@ import "./styles/login.css";
  */
 const App: React.FC = () => {
     const navigate = useNavigate();
+    const { setUser } = useUser();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
@@ -29,6 +31,7 @@ const App: React.FC = () => {
             const response = await loginUser({ email, password });
 
             if (response.status === "success") {
+                setUser(response.userId!, response.username!);
                 navigate("/dashboard");
             } else {
                 setError("Kirjautuminen epäonnistui: " + response.message);

@@ -23,7 +23,7 @@ async function startServer(): Promise<void> {
         console.error("Palvelimen käynnistys epäonnistui:", error);
         process.exit(1);
     }
-};
+}
 
 // Käsitellään ei-käsitellyt poikkeukset
 process.on("uncaughtException", (error) => {

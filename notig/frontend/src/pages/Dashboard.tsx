@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { Note } from '../../types/Note.ts';
+import type { Note } from '../types/Note.ts';
 import { Header, Sidebar, Footer } from '../components/PageLayout.tsx';
 import "../styles/dashboard.css";
 

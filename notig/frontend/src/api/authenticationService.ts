@@ -26,9 +26,9 @@ interface AuthenticationResponse {
  * @returns {Promise<AuthenticationResponse>} - Palvelimen vastaus
  */
 export async function registerUser(data: RegisterData): Promise<AuthenticationResponse> {
-    const reponse = await axios.post(`${API_URL}/authentication/register`, data);
-    return reponse.data;
-};
+    const response = await axios.post(`${API_URL}/authentication/register`, data);
+    return response.data;
+}
 
 /**
  * Käsittelee käyttäjän kirjautumisen.
@@ -38,4 +38,4 @@ export async function registerUser(data: RegisterData): Promise<AuthenticationRe
 export async function loginUser(data: LoginData): Promise<AuthenticationResponse> {
     const response = await axios.post(`${API_URL}/authentication/login`, data);
     return response.data;
-};
+}

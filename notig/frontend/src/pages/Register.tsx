@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { registerUser } from "../api/authenticationService.ts";
+import { registerUser } from '../api/authenticationService.ts';
 import "../styles/register.css";
 
 interface RegisterData {

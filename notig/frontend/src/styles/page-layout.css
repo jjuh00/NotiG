@@ -138,7 +138,6 @@
 .notig-sidebar {
     display: flex;
     width: 280px;
-    height: calc(100vh - 120px);
     flex-direction: column;
     background-color: #1e1f1f;
     border-right: 1px solid darkslategray;

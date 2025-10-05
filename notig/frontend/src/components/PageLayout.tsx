@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import type { Note } from '../../types/Note.ts';
+import { useNavigate } from 'react-router-dom';
+import type { Note } from '../types/Note.ts';
+import useUser from '../hooks/useUser.ts';
+import { logoutUser } from '../api/userService.ts';
 import "../styles/page-layout.css";
 
 // Header-propsit
@@ -19,6 +22,8 @@ interface SidebarProps {
  * @returns JSX.Element
  */
 const Header: React.FC<HeaderProps> = ({ onSearch }: HeaderProps) => {
+    const navigate = useNavigate();
+    const { username, clearUser } = useUser();
     const [searchString, setSearchString] = useState<string>('');
     const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
 
@@ -30,16 +35,22 @@ const Header: React.FC<HeaderProps> = ({ onSearch }: HeaderProps) => {
      * Käsittelee navigoinnin käyttäjäasetuksiin.
      */
     const handleSettings = () => {
-        // TODO: Lisää navigointilogiikka käyttäjäasetuksiin
-        console.log("Navigoidaan käyttäjäasetuksiin");
+        setIsUserMenuOpen(false);
+        navigate("/settings");
     }
 
     /**
      * Käsittelee käyttäjän uloskirjautumisen.
      */
-    const handleLogout = () => {
-        // TODO: Lisää uloskirjautumislogiikka
-        console.log("Uloskirjautuminen onnistui");
+    const handleLogout = async () => {
+        try {
+            await logoutUser();
+            clearUser();
+            setIsUserMenuOpen(false);
+            navigate('/');
+        } catch (error) {
+            console.error("Uloskirjautumisvirhe:", error);
+        }
     };
 
     return (
@@ -63,6 +74,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }: HeaderProps) => {
             <div className="header-right">
                 <div className="usermenu">
                     <button className="usermenu-toggle" onClick={toggleUserMenu}>
+                        <span className="username-display">{username}</span>&nbsp;
                         <i className="fi fi-sr-menu-burger"></i>
                     </button>
 
@@ -145,7 +157,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notes, onNoteSelected }: SidebarProps
  * @returns JSX.Element
  */
 const Footer: React.FC = () => {
-    const appVersion = "1.1.1"; // TODO: Hae package.json:sta
+    const appVersion = "1.2.1"; // TODO: Hae package.json:sta
 
     return (
         <footer className="notig-footer">

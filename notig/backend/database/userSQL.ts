@@ -23,7 +23,7 @@ export async function createUser(username: string, email: string, hashedPassword
         [username, email, hashedPassword]
     );
     return result.lastID!;
-};
+}
 
 /**
  * Hakee käyttäjän sähköpostin perusteella.
@@ -35,7 +35,7 @@ export async function findUserByEmail(email: string): Promise<User | undefined> 
     return await db.get<User>(
         `SELECT * FROM users WHERE email = ?`, [email]
     );
-};
+}
 
 /**
  * Hakee käyttäjän käyttäjänimen perusteella.
@@ -47,7 +47,7 @@ export async function findUserByUsername(username: string): Promise<User | undef
     return await db.get<User>(
         `SELECT * FROM users WHERE username = ?`, [username]
     );
-};
+}
 
 /**
  * Hakee käyttäjän ID:n perusteella.
@@ -59,6 +59,24 @@ export async function findUserById(id: string): Promise<User | undefined> {
     return await db.get<User>(
         `SELECT * FROM users WHERE id = ?`, [id]
     );
-};
+}
+
+/**
+ * Päivittää käyttäjän tiedot.
+ * @param {string} id - Käyttäjän ID
+ * @param {string} username - Uusi käyttäjänimi
+ * @param {string} email - Uusi sähköposti
+ * @param {string} hashedPassword - Uusi salattu salasana
+ * @returns {Promise<void>}
+ */
+export async function updateUser(id: string, username: string, email: string, hashedPassword: string): Promise<void> {
+    const db = getDatabase();
+    const currentDate = new Date().toISOString();
+
+    await db.run(
+        `UPDATE users SET username = ?, email = ?, password = ?, updated_at = ? WHERE id = ?`,
+        [username, email, hashedPassword, currentDate, id]
+    );
+}
 
 export type { User };

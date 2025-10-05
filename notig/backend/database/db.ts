@@ -58,7 +58,7 @@ export async function initializeDatabase(): Promise<Database> {
 
     console.info("Tietokanta alustettu onnistuneesti");
     return db;
-};
+}
 
 /**
  * Hakee tietokantainstanssin.
@@ -70,4 +70,4 @@ export function getDatabase(): Database {
         throw new Error("Tietokantaa ei ole alustettu. Kutsu initializeDatabase-funktiota ensin");
     }
     return db;
-};
+}
