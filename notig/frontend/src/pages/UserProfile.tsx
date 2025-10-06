@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import type { FormEvent } from 'react';
-import { getCurrentUser, updateUserData } from '../api/userService.ts';
 import { useNavigate } from 'react-router-dom';
+import useUser from '../hooks/useUser.ts';
+import { getCurrentUser, updateUserData, deleteUser } from '../api/userService.ts';
 import "../styles/user-profile.css";
 
 interface ProfileData {
@@ -23,6 +24,8 @@ interface UserProfileProps {
  */
 const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) => {
     const navigate = useNavigate();
+    const { clearUser } = useUser();
+    const [action, setAction] = useState<"päivitä" | "poista">("päivitä");
     const [originalData, setOriginalData] = useState<{ username: string; email: string;}>({
         username: '',
         email: ''
@@ -59,7 +62,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
                 password: '',
                 confirmPassword: ''
             });
-        } catch (error: any) {
+        } catch (error) {
             console.error("Käyttäjätietojen latausvirhe:", error);
             setError("Käyttäjätietojen lataus epäonnistui");
         }
@@ -111,6 +114,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
         e.preventDefault();
         setError('');
         setSuccessMessage('');
+        setAction("päivitä");
 
         if (!hasChanges()) {
             setError("Käyttäjätiedoissa ei ole muutoksia");
@@ -125,6 +129,16 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
     };
 
     /**
+     * Käsittelee poista-napin klikkauksen.
+     */
+    const handleDeleteClick = () => {
+        setError('');
+        setSuccessMessage('');
+        setAction("poista");
+        setShowPasswordModal(true);
+    };
+
+    /**
      * Sulkee salasanan vahvistusmodaalin.
      */
     const closePasswordModal = () => {
@@ -134,9 +148,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
     };
 
     /**
-     * Käsittelee käyttäjätietojen päivityksen salasanan vahvistuksen jälkeen.
+     * Käsittelee modaalin vahvistuksen (käsittelee sekä päivityksen että poiston).
      */
-    const handleUpdateProfile = async () => {
+    const handleModalConfirm = async () => {
         if (!currentPassword) {
             setError("Syötä nykyinen salasana");
             return;
@@ -146,46 +160,60 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
         setLoading(true);
 
         try {
-            const updateData: {
-                userId: string;
-                currentPassword: string;
-                username?: string;
-                email?: string;
-                newPassword?: string;
-            } = {
-                userId,
-                currentPassword,
-            };
+            if (action === "päivitä") {
+                const updateData: {
+                    userId: string;
+                    currentPassword: string;
+                    username?: string;
+                    email?: string;
+                    newPassword?: string;
+                } = {
+                    userId,
+                    currentPassword,
+                };
 
-            if (formData.username !== originalData.username) {
-                updateData.username = formData.username;
+                if (formData.username !== originalData.username) {
+                    updateData.username = formData.username;
+                }
+                if (formData.email !== originalData.email) {
+                    updateData.email = formData.email;
+                }
+                if (formData.password !== '') {
+                    updateData.newPassword = formData.password;
+                }
+
+                const response = await updateUserData(updateData);
+
+                if (response.status === "success") {
+                    setSuccessMessage("Käyttäjätiedot päivitetty onnistuneesti");
+                    setShowPasswordModal(false);
+                    setCurrentPassword('');
+                    setFormData({...formData, password: '', confirmPassword: ''});
+                    await loadUserData();
+                    setTimeout(() => {
+                        navigate("/dashboard");
+                    }, 2000);
+                } else {
+                    setError("Käyttäjätietojen päivitys epäonnistui");
+                }
+            } else if (action === "poista") {
+                const response = await deleteUser({ userId, currentPassword });
+                
+                if (response.status === "success") {
+                    setSuccessMessage("Käyttäjä poistettu onnistuneesti");
+                    setShowPasswordModal(false);
+                    setCurrentPassword('');
+                    clearUser();
+                    setTimeout(() => {
+                        navigate('/');
+                    }, 3000);
+                } else {
+                    setError("Käyttäjän poisto epäonnistui");
+                }
             }
-
-            if (formData.email !== originalData.email) {
-                updateData.email = formData.email;
-            }
-
-            if (formData.password !== '') {
-                updateData.newPassword = formData.password;
-            }
-
-            const response = await updateUserData(updateData);
-
-            if (response.status === "success") {
-                setSuccessMessage("Käyttäjätiedot päivitetty onnistuneesti");
-                setShowPasswordModal(false);
-                setCurrentPassword('');
-                setFormData({...formData, password: '', confirmPassword: ''});
-                await loadUserData();
-                setTimeout(() => {
-                    navigate("/dashboard");
-                }, 3000);
-            } else {
-                setError("Käyttäjätietojen päivitys epäonnistui: " + response.message);
-            }
-        } catch (error: any) {
-            console.error("Käyttäjätietojen päivitysvirhe:", error);
-            setError("Käyttäjätietojen päivitys epäonnistui");
+        } catch (error) {
+            console.error("Toiminto epäonnistui:", error);
+            setError("Toiminto epäonnistui");
         } finally {
             setLoading(false);
         }
@@ -255,6 +283,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
                 {successMessage && <p className="success-message">{successMessage}</p>}
 
                 <div className="form-buttons">
+                    <button type="button" className="delete-button" onClick={handleDeleteClick}>
+                        <i className="fi fi-ts-trash"></i>
+                    </button>
                     <button type="button" className="cancel-button" onClick={handleCancelClick} disabled={loading}>
                         <i className="fi fi-br-cross"></i>
                     </button>
@@ -287,7 +318,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
                             <button className="modal-cancel-button" onClick={closePasswordModal} disabled>
                                 <i className="fi fi-br-cross"></i>
                             </button>
-                            <button className="modal-confirm-button" onClick={handleUpdateProfile} disabled={loading}>
+                            <button className="modal-confirm-button" onClick={handleModalConfirm} disabled={loading}>
                                 <i className="fi fi-br-check"></i>
                             </button>
                         </div>

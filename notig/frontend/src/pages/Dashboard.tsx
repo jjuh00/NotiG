@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Note } from '../types/Note.ts';
 import { Header, Sidebar, Footer } from '../components/PageLayout.tsx';
+import { getUserNotes } from '../api/noteService.ts';
+import useUser from '../hooks/useUser.ts';
 import "../styles/dashboard.css";
 
 /**
@@ -9,9 +12,31 @@ import "../styles/dashboard.css";
  * @returns JSX.Element
  */
 const Dashboard: React.FC = () => {
+    const navigate = useNavigate();
+    const { userId } = useUser();
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [notes, setNotes] = useState<Note[]>([]);
 
+    useEffect(() => {
+        if (userId) {
+            loadNotes();
+        }
+    }, [userId]);
+
+    /**
+     * Lataa käyttäjän muistiinpanot palvelimelta.
+     * 
+     */
+    const loadNotes = async () => {
+        try {
+            const fetchedNotes = await getUserNotes(userId!);
+            setNotes(fetchedNotes);
+        } catch (error) {
+            console.error("Muistiinpanojen latausvirhe:", error);
+            // Jos käyttäjän muistiinpanojen haku epäonnistuu, ohjataan käyttäjä takaisin kirjautumissivulle
+            navigate('/');
+        }
+    };
 
     /**
      * Käsittelee hakukyselyn muutokset.
@@ -22,11 +47,10 @@ const Dashboard: React.FC = () => {
     };
 
     /**
-     * Käsittelee uuden muistiinpanon luomisen.
+     * Käsittelee navigoinnin uuden muistiinpanon luomiseen.
      */
     const handleCreateNote = () => {
-        // TODO: Lisää logiikka uuden muistiinpanon luomiseksi
-        console.log("Uusi muistiinpano luotu");
+        navigate("/note/new");
     };
 
     /**

@@ -1,6 +1,7 @@
 import express from "express";
 import { Application, Request, Response, NextFunction } from "express";
 import userRoutes from "./routes/userRoutes.ts";
+import noteRoutes from "./routes/noteRoutes.ts";
 
 const app: Application = express();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Reitit
 app.use(userRoutes);
+app.use(noteRoutes);
 
 // Palvelintila
 app.get("/api/health", (req: Request, res: Response) => {

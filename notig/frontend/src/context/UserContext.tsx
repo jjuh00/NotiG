@@ -24,7 +24,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }: UserProviderPro
     const [userId, setUserId] = useState<string | null>(null);
     const [username, setUsername] = useState<string | null>(null);
 
-    // Ladataan käyttäjätiedot localStoragesta sivun latautuessa
+    // Ladataan käyttäjätiedot localStoragesta
     useEffect(() => {
         const storedUserId = localStorage.getItem("userId");
         const storedUsername = localStorage.getItem("username");

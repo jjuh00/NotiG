@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { findUserByEmail, findUserByUsername, findUserById, createUser, updateUser } from "../database/userSQL.ts";
+import { findUserByEmail, findUserByUsername, findUserById, createUser, updateUser, deleteUserNotes, deleteUser } from "../database/userSQL.ts";
 import bcrypt from "bcrypt";
 
 /**
@@ -181,5 +181,44 @@ export async function getUserById(req: Request, res: Response): Promise<void> {
     } catch (error) {
         console.error("Käyttäjän hakemisessa ilmeni virhe:", error);
         res.status(500).json({ status: "error", message: "Palvelinvirhe käyttäjätietojen haussa: " + error });
+    }
+}
+
+/**
+ * Käsittelee käyttäjän poistamisen.
+ * @param {Request} req - Expressin Request-olio (sisältää käyttäjän ID:n ja salasanan)
+ * @param {Response} res - Expressin Response-olio
+ * @returns {Promise<void>}
+ */
+export async function deleteUserProfile(req: Request, res: Response): Promise<void> {
+    const { userId, currentPassword } = req.body;
+
+    if (!userId || !currentPassword) {
+        res.status(400).json({ status: "error", message: "Pakollisia tietoja puuttuu" });
+        return;
+    }
+
+    const user = await findUserById(userId);
+    if (!user) {
+        res.status(404).json({ status: "error", message: "Käyttäjää ei löytynyt" });
+        return;
+    }
+
+    // Tarkistetaan salasana
+    const passwordMatches = await bcrypt.compare(currentPassword, user.password);
+    if (!passwordMatches) {
+        res.status(401).json({ status: "error", message: "Väärä salasana" });
+        return;
+    }
+
+    try {
+        // Poistetaan käyttäjän muistiinpanot
+        await deleteUserNotes(userId);
+        // Poistetaan käyttäjä
+        await deleteUser(userId);
+        res.status(200).json({ status: "success" });
+    } catch (error) {
+        console.error("Käyttäjän poistamisessa ilmeni virhe:", error);
+        res.status(500).json({ status: "error", message: "Palvelinvirhe käyttäjän poistamisessa: " + error });
     }
 }

@@ -105,6 +105,31 @@
     gap: 1rem;
 }
 
+.delete-button {
+    padding: 1rem;
+    flex: 1;
+    background-color: #1e1f1f;
+    border: 2px solid darkslategray;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.delete-button i {
+    color: salmon;
+    font-size: 15px;
+}
+
+.delete-button:hover:not(:disabled) {
+    background: rgba(salmon, 0.1);
+    border-color: salmon;
+}
+
+.delete-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .cancel-button {
     padding: 1rem;
     flex: 1;

@@ -79,4 +79,28 @@ export async function updateUser(id: string, username: string, email: string, ha
     );
 }
 
+/**
+ * Poistaa käyttäjän kaikki muistiinpanot.
+ * @param {string} userId - Käyttäjän ID
+ * @returns {Promise<void>}
+ */
+export async function deleteUserNotes(userId: string): Promise<void> {
+    const db = getDatabase();
+    await db.run(
+        `DELETE FROM notes WHERE user_id = ?`, [userId]
+    );
+}
+
+/**
+ * Poistaa käyttäjän tietokannasta.
+ * @param {string} id - Käyttäjän ID
+ * @returns {Promise<void>}
+ */
+export async function deleteUser(id: string): Promise<void> {
+    const db = getDatabase();
+    await db.run(
+        `DELETE FROM users WHERE id = ?`, [id]
+    );
+}
+
 export type { User };

@@ -1,0 +1,145 @@
+/* NoteEditor.tsx tyylit */
+
+.note-editor {
+    display: flex;
+    padding: 2rem;
+    min-height: 100vh;
+    flex-direction: column;
+    background: linear-gradient(135deg, #1e1f1f 0%, #2c2d2d 100%);
+}
+
+.editor-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.editor-header h1 {
+    background: linear-gradient(135deg, orangered 0%, lightsalmon 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.editor-controls {
+    display: flex;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.editor-select {
+    padding: 0.75rem;
+    background-color: #1e1f1f;
+    color: whitesmoke;
+    border: 2px solid darkslategray;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.editor-sectl:hover:not(:disabled) {
+    border-color: dimgray;
+}
+
+.editor-select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.editor-toggle {
+    padding: 0.75rem;
+    background-color: #1e1f1f;
+    color: lightgray;
+    border: 2px solid darkslategray;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.editor-toggle.active {
+    background-color: darkslategray;
+    color: whitesmoke;
+    border-color: dimgray;
+}
+
+.editor-toggle:hover:not(:disabled) {
+    background-color: darkslategray;
+    color: whitesmoke;
+}
+
+.editor-toggle:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.editor-toggle i {
+    font-size: 16px;
+}
+
+.editor-title {
+    padding: 0.875rem 1rem;
+    margin-bottom: 1rem;
+    background-color: #1e1f1f;
+    color: whitesmoke;
+    font-size: 20px;
+    font-weight: 600;
+    border: 2px solid darkslategray;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+}
+
+.editor-title:focus {
+    border-color: orangered;
+    box-shadow: 0 0 0 3px rgba(orangered, 0.1);
+}
+
+.editor-title:hover:not(:disabled) {
+    border-color: dimgray;
+}
+
+.editor-title:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.editor-title::placeholder {
+    color: gray;
+}
+
+.editor-content {
+    padding: 1.5rem;
+    flex: 1;
+    min-height: 300px;
+    resize: vertical;
+    background-color: #1e1f1f;
+    font-size: 16px;
+    border: 2px solid darkslategray;
+    border-radius: 8px;
+    line-height: 1.6;
+    transition: all 0.25s ease;
+}
+
+.editor-content:focus {
+    border-color: orangered;
+    box-shadow: 0 0 0 3px rgba(orangered, 0.1);
+}
+
+.editor-content:hover:not(:disabled) {
+    border-color: dimgray;
+}
+
+.editor-content:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.editor-content::placeholder {
+    color: gray;
+}
+
+.editor-buttons {
+    display: flex;
+    margin-top: 2rem;
+    gap: 1rem;
+    justify-content: flex-end;
+}

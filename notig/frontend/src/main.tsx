@@ -7,6 +7,7 @@ import App from './App.tsx';
 import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import UserProfile from './pages/UserProfile.tsx';
+import NoteEditor from './pages/NoteEditor.tsx';
 import "./styles/global.css";
 
 const AppRoutes = () => {
@@ -18,6 +19,7 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/settings" element={<UserProfile userId={userId!} />} />
+      <Route path="/note/new" element={<NoteEditor />} />
     </Routes>
   );
 }

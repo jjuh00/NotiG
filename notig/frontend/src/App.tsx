@@ -34,7 +34,8 @@ const App: React.FC = () => {
                 setUser(response.userId!, response.username!);
                 navigate("/dashboard");
             } else {
-                setError("Kirjautuminen epäonnistui: " + response.message);
+                console.error("Kirjautumisvirhe:", response.message);
+                setError("Kirjautuminen epäonnistui");
             }
         } catch (error: any) {
             console.error("Kirjautumisvirhe:", error);

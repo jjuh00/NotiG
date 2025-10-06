@@ -73,8 +73,8 @@ const Header: React.FC<HeaderProps> = ({ onSearch }: HeaderProps) => {
 
             <div className="header-right">
                 <div className="usermenu">
+                    <span className="username-display">{username}</span>&nbsp;
                     <button className="usermenu-toggle" onClick={toggleUserMenu}>
-                        <span className="username-display">{username}</span>&nbsp;
                         <i className="fi fi-sr-menu-burger"></i>
                     </button>
 
@@ -157,7 +157,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notes, onNoteSelected }: SidebarProps
  * @returns JSX.Element
  */
 const Footer: React.FC = () => {
-    const appVersion = "1.2.1"; // TODO: Hae package.json:sta
+    const appVersion = "1.3.1"; // TODO: Hae package.json:sta
 
     return (
         <footer className="notig-footer">

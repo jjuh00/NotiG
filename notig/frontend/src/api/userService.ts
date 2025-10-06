@@ -10,6 +10,11 @@ interface UpdateUserData {
     newPassword?: string;
 }
 
+interface DeleteUserData {
+    userId: string;
+    currentPassword: string;
+}
+
 interface UserResponse {
     status: string;
     message?: string;
@@ -38,6 +43,20 @@ export async function getCurrentUser(userId: string): Promise<UserResponse> {
     return response.data;
 }
 
+/**
+ * Poistaa käyttäjäntilin.
+ * @param {DeleteUserData} data - Poistettavan käyttäjän tiedot
+ * @returns {Promise<UserResponse>} - Palvelimen vastaus
+ */
+export async function deleteUser(data: DeleteUserData): Promise<UserResponse> {
+    const response = await axios.post(`${API_URL}/user/delete`, data);
+    return response.data;
+}
+
+/**
+ * Kirjaa käyttäjän ulos (paikallinen toiminto)
+ * @returns {Promise<UserResponse>} - Palvelimen vastaus
+ */
 export async function logoutUser(): Promise<UserResponse> {
     return { status: "success" }; 
 }
