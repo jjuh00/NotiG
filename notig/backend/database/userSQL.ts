@@ -1,4 +1,4 @@
-import { getDatabase } from "./db.ts";
+import { getDatabase } from './db.ts';
 
 interface User {
     id: string;

@@ -1,16 +1,36 @@
 import express from "express";
-import { createNoteHandler, getNotesByUser } from "../controllers/noteController.ts";
+import { getNotesByUser, getNoteHandler, createNoteHandler, updateNoteHandler, deleteNoteHandler } from '../controllers/noteController.ts';
 
 const router = express.Router();
 
 /**
- * Muistiinpanon luomisreitti
+ * Käyttäjän muistiinpanojen reitti
+ * GET /api/note/user/:userId
  */
-router.post("/api/notes", createNoteHandler);
+router.get("/api/note/user/:userId", getNotesByUser);
 
 /**
- * Käyttäjän muistiinpanojen reitti
+ * Yksittäisen muistiinpanon hakureitti
+ * GET /api/note/notes/:id
  */
-router.get("/api/notes/:userId", getNotesByUser);
+router.get("/api/note/notes/:id", getNoteHandler);
+
+/**
+ * Muistiinpanon luomisreitti
+ * POST /api/note
+ */
+router.post("/api/note", createNoteHandler);
+
+/**
+ * Muistiinpanon päivitysreitti
+ * PUT /api/note/update/:id
+ */
+router.put("/api/note/update/:id", updateNoteHandler);
+
+/**
+ * Muistiinpanon poistamisreitti
+ * DELETE /api/note/delete/:id
+ */
+router.delete("/api/note/delete/:id", deleteNoteHandler);
 
 export default router;

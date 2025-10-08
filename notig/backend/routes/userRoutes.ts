@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login, updateProfile, getUserById, deleteUserProfile } from "../controllers/userController.ts";
+import { register, login, getUserById, updateProfile, deleteUserProfile } from '../controllers/userController.ts';
 
 const router = express.Router();
 
@@ -16,17 +16,21 @@ router.post("/api/authentication/register", register);
 router.post("/api/authentication/login", login);
 
 /**
- * Käyttäjän tietojen päivitysreitti.
- */
-router.put("/api/user/update", updateProfile);
-
-/**
  * Reitti käyttäjätietojen hakemiseen ID:llä.
+ * GET /api/user/:id
  */
 router.get("/api/user/:id", getUserById);
 
 /**
+ * Käyttäjän tietojen päivitysreitti.
+ * PUT /api/user/update
+ */
+router.put("/api/user/update", updateProfile);
+
+
+/**
  * Käyttäjäprofiilin poistoreitti.
+ * POST /api/user/delete
  */
 router.post("/api/user/delete", deleteUserProfile);
 

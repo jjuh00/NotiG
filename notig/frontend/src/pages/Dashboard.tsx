@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Note } from '../types/Note.ts';
 import { Header, Sidebar, Footer } from '../components/PageLayout.tsx';
-import { getUserNotes } from '../api/noteService.ts';
+import { getUserNotes, updateNote, deleteNote } from '../api/noteService.ts';
 import useUser from '../hooks/useUser.ts';
-import "../styles/dashboard.css";
+import '../styles/dashboard.css';
 
 /**
  * Hallintasivu-komponentti.
@@ -16,6 +16,7 @@ const Dashboard: React.FC = () => {
     const { userId } = useUser();
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [notes, setNotes] = useState<Note[]>([]);
+    const [noteMenuId, setNoteMenuId] = useState<string | null>(null);
 
     useEffect(() => {
         if (userId) {
@@ -33,8 +34,6 @@ const Dashboard: React.FC = () => {
             setNotes(fetchedNotes);
         } catch (error) {
             console.error("Muistiinpanojen latausvirhe:", error);
-            // Jos käyttäjän muistiinpanojen haku epäonnistuu, ohjataan käyttäjä takaisin kirjautumissivulle
-            navigate('/');
         }
     };
 
@@ -54,21 +53,45 @@ const Dashboard: React.FC = () => {
     };
 
     /**
+     * Käsittelee muistiinpanon kiinnittämisen ja kiinnityksen poistamisen.
+     * @param {string} noteId - Muistiinpanon ID
+     * @param {boolean} isPinned - Onko muistiinpano kiinnitetty
+     */
+    const handlePinNote = async (noteId: string, isPinned: boolean) => {
+        try {
+            await updateNote(noteId, { isPinned: !isPinned });
+            await loadNotes();
+        } catch (error) {
+            console.error("Muistiinpanon kiinnitysvirhe:", error);
+        } finally {
+            setNoteMenuId(null);
+        }
+    };
+
+    /**
      * Käsittelee muistiinpanon muokkauksen.
      * @param {string} noteId - Muokattavan muistiinpanon ID
      */
     const handleEditNote = (noteId: string) => {
-        // TODO: Lisää logiikka muistiinpanon muokkaamiseksi
-        console.log("Muistiinpanon muokkaaminen:", noteId);
+        setNoteMenuId(null);
+        navigate(`/note/${noteId}`);
     };
 
     /**
      * Käsittelee muistiinpanon poistamisen.
      * @param {string} noteId - Poistettavan muistiinpanon ID
      */
-    const handleDeleteNote = (noteId: string) => {
-        // TODO: Lisää logiikka muistiinpanon poistamiseksi
-        console.log("Muistiinpanon poistaminen:", noteId);
+    const handleDeleteNote = async (noteId: string) => {
+        if (confirm("Haluatko varmasti poistaa tämän muistiinpanon?")) {
+            try {
+                await deleteNote(noteId);
+                await loadNotes();
+            } catch (error) {
+                console.error("Muistiinpanon poistamisvirhe:", error);
+            } finally {
+                setNoteMenuId(null);
+            }
+        }
     };
     
     /**
@@ -95,6 +118,7 @@ const Dashboard: React.FC = () => {
 
                 <main className="dashboard-main">
                     <div className="content-header">
+                        <h1>Muistiinpanot</h1>
                         <button className="create-note-button" onClick={handleCreateNote}>
                             <i className="fi fi-rr-add"></i>
                         </button>
@@ -112,7 +136,7 @@ const Dashboard: React.FC = () => {
                                     <path d="M 100 120 L 100 140 M 90 130 L 110 130" />
                                 </svg>
                             </div>
-                            <h2 className="empty-state-title">Ei vielä muistiinpanoja</h2>
+                            <h2>Ei vielä muistiinpanoja</h2>
                             <p className="empty-state-message">Luo ensimmäinen muistiinpanosi nyt!</p>
                             <button className="create-note-button" onClick={handleCreateNote}>
                                 <i className="fi fi-rr-add"></i>
@@ -128,16 +152,28 @@ const Dashboard: React.FC = () => {
                                         <div className="note-actions">
                                             <button
                                                 className="note-button"
-                                                onClick={(e) => e.stopPropagation()}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setNoteMenuId(noteMenuId === note.id ? null : note.id);
+                                                }}
                                             >
                                                 <i className="fi fi-rr-menu-dots-vertical"></i>
                                             </button>
+                                            {noteMenuId === note.id && (
+                                                <div className="note-menu">
+                                                    <button onClick={() => handlePinNote(note.id, note.isPinned)}>
+                                                        {note.isPinned ? "Poista kiinnitys" : "Kiinnitä"}
+                                                    </button>
+                                                    <button onClick={() => handleEditNote(note.id)}>Muokkaa</button>
+                                                    <button onClick={() => handleDeleteNote(note.id)}>Poista</button>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                     <p className="note-card-preview">{note.preview}</p>
                                     <div className="note-card-footer">
                                         <span className="note-date">
-                                            {formatDate(note.lastModified)}
+                                            {formatDate(note.lastModified!)}
                                         </span>
                                     </div>
                                 </div>

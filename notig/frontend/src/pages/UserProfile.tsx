@@ -3,7 +3,7 @@ import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser.ts';
 import { getCurrentUser, updateUserData, deleteUser } from '../api/userService.ts';
-import "../styles/user-profile.css";
+import '../styles/user-profile.css';
 
 interface ProfileData {
     username: string;
@@ -64,7 +64,11 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
             });
         } catch (error) {
             console.error("Käyttäjätietojen latausvirhe:", error);
-            setError("Käyttäjätietojen lataus epäonnistui");
+            setError("Käyttäjätietojen lataus epäonnistui. Ohjataan kirjautumissivulle 3 sekunnin kuluttua");
+            setTimeout(async () => {
+                await navigate('/');
+                clearUser();
+            }, 3000);
         }
     };
 
@@ -200,13 +204,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
                 const response = await deleteUser({ userId, currentPassword });
                 
                 if (response.status === "success") {
-                    setSuccessMessage("Käyttäjä poistettu onnistuneesti");
                     setShowPasswordModal(false);
-                    setCurrentPassword('');
                     clearUser();
-                    setTimeout(() => {
-                        navigate('/');
-                    }, 3000);
+                    navigate('/');
                 } else {
                     setError("Käyttäjän poisto epäonnistui");
                 }
@@ -284,7 +284,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
 
                 <div className="form-buttons">
                     <button type="button" className="delete-button" onClick={handleDeleteClick}>
-                        <i className="fi fi-ts-trash"></i>
+                        <i className="fi fi-sr-trash"></i>
                     </button>
                     <button type="button" className="cancel-button" onClick={handleCancelClick} disabled={loading}>
                         <i className="fi fi-br-cross"></i>
@@ -315,7 +315,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
                         </div>
 
                         <div className="modal-buttons">
-                            <button className="modal-cancel-button" onClick={closePasswordModal} disabled>
+                            <button className="modal-cancel-button" onClick={closePasswordModal} disabled={loading}>
                                 <i className="fi fi-br-cross"></i>
                             </button>
                             <button className="modal-confirm-button" onClick={handleModalConfirm} disabled={loading}>

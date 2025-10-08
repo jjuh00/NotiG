@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 
 interface UserContextType {
     userId: string | null;
@@ -8,19 +8,20 @@ interface UserContextType {
     clearUser: () => void;
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
-
-interface UserProviderProps {
-    children: ReactNode;
-}
+const UserContext = createContext<UserContextType>({
+    userId: null,
+    username: null,
+    setUser: () => {},
+    clearUser: () => {}
+});
 
 /**
  * UserProvider-komponentti, joka tarjoaa käyttäjän tilan sovellukselle.
  * Tallentaa käyttäjän ID:n ja käyttäjänimen localStorageen.
- * @param {UserProviderProps} props - Komponentin propsit
+ * @param {PropsWithChildren<{}>} props - Komponentin propsit
  * @returns JSX.Element
  */
-const UserProvider: React.FC<UserProviderProps> = ({ children }: UserProviderProps) => {
+const UserProvider: React.FC<PropsWithChildren<{}>> = ({ children }: PropsWithChildren<{}>) => {
     const [userId, setUserId] = useState<string | null>(null);
     const [username, setUsername] = useState<string | null>(null);
 
@@ -57,15 +58,12 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }: UserProviderPro
         localStorage.removeItem("username");
     };
 
-    const value: UserContextType = {
+    return <UserContext.Provider value={{
         userId,
         username,
         setUser,
         clearUser
-    };
-
-    return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+    }}>{children}</UserContext.Provider>;
 }
 
 export { UserContext, UserProvider };
-export type { UserContextType };

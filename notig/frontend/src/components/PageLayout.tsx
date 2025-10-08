@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Note } from '../types/Note.ts';
 import useUser from '../hooks/useUser.ts';
 import { logoutUser } from '../api/userService.ts';
-import "../styles/page-layout.css";
+import '../styles/page-layout.css';
 
 // Header-propsit
 interface HeaderProps {
@@ -23,7 +23,7 @@ interface SidebarProps {
  */
 const Header: React.FC<HeaderProps> = ({ onSearch }: HeaderProps) => {
     const navigate = useNavigate();
-    const { username, clearUser } = useUser();
+    const { clearUser } = useUser();
     const [searchString, setSearchString] = useState<string>('');
     const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
 
@@ -45,8 +45,8 @@ const Header: React.FC<HeaderProps> = ({ onSearch }: HeaderProps) => {
     const handleLogout = async () => {
         try {
             await logoutUser();
-            clearUser();
             setIsUserMenuOpen(false);
+            clearUser();
             navigate('/');
         } catch (error) {
             console.error("Uloskirjautumisvirhe:", error);
@@ -73,7 +73,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }: HeaderProps) => {
 
             <div className="header-right">
                 <div className="usermenu">
-                    <span className="username-display">{username}</span>&nbsp;
                     <button className="usermenu-toggle" onClick={toggleUserMenu}>
                         <i className="fi fi-sr-menu-burger"></i>
                     </button>
@@ -157,7 +156,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notes, onNoteSelected }: SidebarProps
  * @returns JSX.Element
  */
 const Footer: React.FC = () => {
-    const appVersion = "1.3.1"; // TODO: Hae package.json:sta
+    const appVersion = "1.3.2";
 
     return (
         <footer className="notig-footer">

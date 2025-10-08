@@ -3,7 +3,7 @@ import type { FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from './api/authenticationService.ts';
 import useUser from './hooks/useUser.ts';
-import "./styles/login.css";
+import './styles/login.css';
 
 /**
  * Komponentti kirjautumista varten.

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import useUser from '../hooks/useUser.ts';
-import { createNote } from '../api/noteService.ts';
-import "../styles/note-editor.css";
+import { createNote, getNote, updateNote } from '../api/noteService.ts';
+import '../styles/note-editor.css';
 
 /**
  * Komponentti muistiinpanon luomista (ja muokkausta) varten.
@@ -12,6 +12,8 @@ import "../styles/note-editor.css";
 const NoteEditor: React.FC = () => {
     const navigate = useNavigate();
     const { userId } = useUser();
+    const { noteId } = useParams<{ noteId: string }>();
+    const isNew = noteId === "new";
     const [title, setTitle] = useState<string>('');
     const [content, setContent] = useState<string>('');
     const [fontFamily, setFontFamily] = useState<string>("Inter");
@@ -21,7 +23,35 @@ const NoteEditor: React.FC = () => {
     const [isItalic, setIsItalic] = useState<boolean>(false);
     const [isUnderline, setIsUnderline] = useState<boolean>(false);
     const [error, setError] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
+
+    /**
+     * Lataa olemassa olevan muistiinpanon tiedot, jos muokataan vanhaa muistiinpanoa.
+     */
+    useEffect(() => {
+        if (!isNew) {
+            loadNote();
+        }
+    }, [noteId]);
+
+    /**
+     * Lataa olemassa olevan muistiinpanon tiedot.
+     */
+    const loadNote = async () => {
+        try {
+            const note = await getNote(noteId!);
+            setTitle(note.title);
+            setContent(note.content || '');
+            setFontFamily(note.fontFamily);
+            setFontSize(note.fontSize);
+            setColor(note.color);
+            setIsBold(note.isBold);
+            setIsItalic(note.isItalic);
+            setIsUnderline(note.isUnderline);
+        } catch (error) {
+            console.error("Muistiinpanon latausvirhe:", error);
+            setError("Muistiinpanon lataus epäonnistui");
+        }
+    };
 
     /**
      * Käsittelee muistiinpanon tallentamisen.
@@ -32,32 +62,29 @@ const NoteEditor: React.FC = () => {
             return;
         }
 
-        setLoading(true);
         setError('');
 
         try {
-            const response = await createNote({
-                userId: userId!,
+            const noteData = {
                 title,
                 content,
-                fontFamily,
-                fontSize,
+                fontFamily: fontFamily,
+                fontSize: fontSize,
                 color,
-                isBold,
-                isItalic,
-                isUnderline
-            });
+                isBold: isBold,
+                isItalic: isItalic,
+                isUnderline: isUnderline
+            };
 
-            if (response.status === "created") {
-                navigate("/dashboard");
+            if (isNew) {
+                await createNote({ ...noteData, userId: userId! });
             } else {
-                setError("Muistiinpanon luonti epäonnistui: " + response.message);
+                await updateNote(noteId!, noteData);
             }
+            navigate("/dashboard");
         } catch (error) {
-            console.error("Muistiinpanon tallentamisessa ilmeni virhe:", error);
-            setError("Muistiinpanon luonti epäonnistui");
-        } finally {
-            setLoading(false);
+            console.error("Muistiinpanon tallennusvirhe:", error);
+            setError("Muistiinpanon tallennus epäonnistui");
         }
     };
 
@@ -71,7 +98,7 @@ const NoteEditor: React.FC = () => {
     return (
         <div className="note-editor">
             <div className="editor-header">
-                <h1>Uusi muistiinpano</h1>
+                <h1>{isNew ? "Uusi muistiinpano" : "Muokkaa muistiinpanoa"}</h1>
             </div>
 
             <div className="editor-controls">
@@ -80,7 +107,6 @@ const NoteEditor: React.FC = () => {
                     className="editor-select"
                     value={fontFamily}
                     onChange={(e) => setFontFamily(e.target.value)}
-                    disabled={loading}
                 >
                     <option value="Inter">Inter</option>
                     <option value="JetBrains Mono">JetBrains Mono</option>
@@ -94,7 +120,6 @@ const NoteEditor: React.FC = () => {
                     className="editor-select"
                     value={fontSize}
                     onChange={(e) => setFontSize(Number(e.target.value))}
-                    disabled={loading}
                 >
                     {[12, 14, 16, 18, 20, 24, 28, 32].map((size) => (
                         <option key={size} value={size}>{size}px</option>
@@ -106,7 +131,6 @@ const NoteEditor: React.FC = () => {
                     className="editor-select"
                     value={color}
                     onChange={(e) => setColor(e.target.value)}
-                    disabled={loading}
                 >
                     <option value="white">Valkoinen</option>
                     <option value="black">Musta</option>
@@ -153,16 +177,15 @@ const NoteEditor: React.FC = () => {
                     fontStyle: isItalic ? "italic" : "normal",
                     textDecoration: isUnderline ? "underline" : "none"
                 }}
-                disabled={loading}
             />
 
             {error && <div className="error-message">{error}</div>}
 
             <div className="editor-buttons">
-                <button className="cancel-button" onClick={handleCancelClick} disabled={loading}>
+                <button className="cancel-button" onClick={handleCancelClick}>
                     <i className="fi fi-br-cross"></i>
                 </button>
-                <button className="save-button" onClick={handleSaveClick} disabled={loading}>
+                <button className="save-button" onClick={handleSaveClick}>
                     <i className="fi fi-br-check"></i>
                 </button>
             </div>

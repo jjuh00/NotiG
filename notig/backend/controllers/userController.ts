@@ -1,5 +1,13 @@
 import { Request, Response } from "express";
-import { findUserByEmail, findUserByUsername, findUserById, createUser, updateUser, deleteUserNotes, deleteUser } from "../database/userSQL.ts";
+import { 
+    findUserByEmail, 
+    findUserByUsername, 
+    createUser, 
+    findUserById, 
+    updateUser, 
+    deleteUserNotes, 
+    deleteUser
+} from '../database/userSQL.ts';
 import bcrypt from "bcrypt";
 
 /**
@@ -10,7 +18,7 @@ import bcrypt from "bcrypt";
  */
 export async function register(req: Request, res: Response): Promise<void> {
     try {
-        let { username, email, password } = req.body;
+        const { username, email, password } = req.body;
 
         // Tarkistetaan syötteet
         if (!username || !email || !password) {
@@ -53,7 +61,7 @@ export async function register(req: Request, res: Response): Promise<void> {
  */
 export async function login(req: Request, res: Response): Promise<void> {
     try {
-        let { email, password } = req.body;
+        const { email, password } = req.body;
 
         // Tarkistetaan syötteet
         if (!email || !password) {
@@ -83,6 +91,42 @@ export async function login(req: Request, res: Response): Promise<void> {
 }
 
 /**
+ * Hakee käyttäjän ID:n perusteella.
+ * @param {Request} req - Expressin Request-olio (sisältää käyttäjän ID:n)
+ * @param {Response} res - Expressin Response-olio 
+ * @returns {Promise<void>}
+ */
+export async function getUserById(req: Request, res: Response): Promise<void> {
+    try {
+        const { id } = req.params;
+
+        if (!id) {
+            res.status(400).json({ status: "error", message: "Käyttäjä ID puuttuu" });
+            return;
+        }
+
+        const user = await findUserById(id);
+        if (!user) {
+            res.status(404).json({ status: "error", message: "Käyttäjää ei löytynyt" });
+            return;
+        }
+
+        // Ei palauteta salasanaa
+        res.status(200).json({
+            status: "ok",
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
+        });
+    } catch (error) {
+        console.error("Käyttäjän hakemisessa ilmeni virhe:", error);
+        res.status(500).json({ status: "error", message: "Palvelinvirhe käyttäjätietojen haussa: " + error });
+    }
+}
+
+/**
  * Käsittelee käyttäjän tietojen päivityksen.
  * @param {Request} req - Expressin Request-olio (sisältää päivitettävät tiedot)
  * @param {Response} res - Expressin Response-olio
@@ -90,7 +134,7 @@ export async function login(req: Request, res: Response): Promise<void> {
  */
 export async function updateProfile(req: Request, res: Response): Promise<void> {
     try {
-        let { userId, currentPassword, username, email, newPassword } = req.body;
+        const { userId, currentPassword, username, email, newPassword } = req.body;
 
         // Tarkistetaan syötteet
         if (!userId || !currentPassword) {
@@ -139,48 +183,10 @@ export async function updateProfile(req: Request, res: Response): Promise<void> 
         // Päivitetään käyttäjän tiedot
         await updateUser(userId, username || user.username, email || user.email, hashedPassword);
 
-        res.status(200).json({ status: "success", message: "Käyttäjätiedot päivitetty onnistuneesti" });       
+        res.status(204).json({ status: "success" });       
     } catch (error) {
         console.error("Käyttäjätietojen päivittämisessä ilmeni virhe:", error);
         res.status(500).json({ status: "error", message: "Palvelinvirhe käyttäjätietojen päivittämisessä: " + error });
-    }
-}
-
-/**
- * Hakee käyttäjän ID:n perusteella.
- * @param {Request} req - Expressin Request-olio (sisältää käyttäjän ID:n)
- * @param {Response} res - Expressin Response-olio 
- * @returns {Promise<void>}
- */
-export async function getUserById(req: Request, res: Response): Promise<void> {
-    try {
-        let { id } = req.params;
-        console.log("Käyttäjä id:", id);
-        console.log("PARAMS:", req.params);
-
-        if (!id) {
-            res.status(400).json({ status: "error", message: "Käyttäjä ID puuttuu" });
-            return;
-        }
-
-        const user = await findUserById(id);
-        if (!user) {
-            res.status(404).json({ status: "error", message: "Käyttäjää ei löytynyt" });
-            return;
-        }
-
-        // Ei palauteta salasanaa
-        res.status(200).json({
-            status: "ok",
-            id: user.id,
-            username: user.username,
-            email: user.email,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt
-        });
-    } catch (error) {
-        console.error("Käyttäjän hakemisessa ilmeni virhe:", error);
-        res.status(500).json({ status: "error", message: "Palvelinvirhe käyttäjätietojen haussa: " + error });
     }
 }
 
@@ -216,7 +222,7 @@ export async function deleteUserProfile(req: Request, res: Response): Promise<vo
         await deleteUserNotes(userId);
         // Poistetaan käyttäjä
         await deleteUser(userId);
-        res.status(200).json({ status: "success" });
+        res.status(204).json({ status: "success" });
     } catch (error) {
         console.error("Käyttäjän poistamisessa ilmeni virhe:", error);
         res.status(500).json({ status: "error", message: "Palvelinvirhe käyttäjän poistamisessa: " + error });

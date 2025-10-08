@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../api/authenticationService.ts';
-import "../styles/register.css";
+import '../styles/register.css';
 
 interface RegisterData {
     username: string;
@@ -68,7 +68,7 @@ const Register: React.FC = () => {
             });
 
             if (response.status === "created") {
-                navigate("/login");
+                navigate('/');
             } else {
                 setError("Rekisteröityminen epäonnistui: " + response.message);
             }

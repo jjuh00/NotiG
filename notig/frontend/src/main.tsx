@@ -8,7 +8,7 @@ import Register from './pages/Register.tsx';
 import Dashboard from './pages/Dashboard.tsx';
 import UserProfile from './pages/UserProfile.tsx';
 import NoteEditor from './pages/NoteEditor.tsx';
-import "./styles/global.css";
+import './styles/global.css';
 
 const AppRoutes = () => {
   const { userId } = useUser();
@@ -19,7 +19,7 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/settings" element={<UserProfile userId={userId!} />} />
-      <Route path="/note/new" element={<NoteEditor />} />
+      <Route path="/note/:noteId" element={<NoteEditor />} />
     </Routes>
   );
 }
