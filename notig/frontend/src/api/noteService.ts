@@ -70,3 +70,15 @@ export async function deleteNote(noteId: string): Promise<{ status: string }> {
     const response = await axios.delete(`${API_URL}/note/delete/${noteId}`);
     return response.data;
 }
+
+/**
+ * Vie muistiinpanon PDF-muotoon.
+ * @param noteId - Muistiinpanon ID
+ * @returns {Promise<Blob>} - PDF-tiedosto Blob-muodossa
+ */
+export async function exportNoteAsPdf(noteId: string): Promise<Blob> {
+    const response = await axios.get(`${API_URL}/note/${noteId}/export`, {
+        responseType: "blob"
+    });
+    return response.data;
+}

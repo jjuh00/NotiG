@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Note } from '../types/Note.ts';
 import { Header, Sidebar, Footer } from '../components/PageLayout.tsx';
-import { getUserNotes, updateNote, deleteNote } from '../api/noteService.ts';
+import { getUserNotes, updateNote, deleteNote, exportNoteAsPdf } from '../api/noteService.ts';
 import useUser from '../hooks/useUser.ts';
 import '../styles/dashboard.css';
 
@@ -59,12 +59,11 @@ const Dashboard: React.FC = () => {
      */
     const handlePinNote = async (noteId: string, isPinned: boolean) => {
         try {
+            setNoteMenuId(null);
             await updateNote(noteId, { isPinned: !isPinned });
             await loadNotes();
         } catch (error) {
             console.error("Muistiinpanon kiinnitysvirhe:", error);
-        } finally {
-            setNoteMenuId(null);
         }
     };
 
@@ -84,13 +83,33 @@ const Dashboard: React.FC = () => {
     const handleDeleteNote = async (noteId: string) => {
         if (confirm("Haluatko varmasti poistaa tämän muistiinpanon?")) {
             try {
+                setNoteMenuId(null);
                 await deleteNote(noteId);
                 await loadNotes();
             } catch (error) {
                 console.error("Muistiinpanon poistamisvirhe:", error);
-            } finally {
-                setNoteMenuId(null);
             }
+        }
+    };
+
+    /**
+     * Käsittelee muistiinpanon viennin PDF-muotoon.
+     * @param {Note} note - Muistiinpano, joka viedään PDF-muotoon
+     */
+    const handleExportPdf = async (note: Note) => {
+        try {
+            setNoteMenuId(null);
+
+            const pdfBlob = await exportNoteAsPdf(note.id);
+
+            const url = window.URL.createObjectURL(pdfBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${note.title}.pdf`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Muistiinpanon PDF-vientivirhe:", error);
         }
     };
     
@@ -166,6 +185,7 @@ const Dashboard: React.FC = () => {
                                                     </button>
                                                     <button onClick={() => handleEditNote(note.id)}>Muokkaa</button>
                                                     <button onClick={() => handleDeleteNote(note.id)}>Poista</button>
+                                                    <button onClick={() => handleExportPdf(note)}>Vie PDF:ksi</button>
                                                 </div>
                                             )}
                                         </div>

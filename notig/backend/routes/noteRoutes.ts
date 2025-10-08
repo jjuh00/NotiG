@@ -1,5 +1,12 @@
 import express from "express";
-import { getNotesByUser, getNoteHandler, createNoteHandler, updateNoteHandler, deleteNoteHandler } from '../controllers/noteController.ts';
+import { 
+    getNotesByUser, 
+    getNoteHandler, 
+    createNoteHandler, 
+    updateNoteHandler, 
+    deleteNoteHandler,
+    generateNotePdf
+} from '../controllers/noteController.ts';
 
 const router = express.Router();
 
@@ -32,5 +39,11 @@ router.put("/api/note/update/:id", updateNoteHandler);
  * DELETE /api/note/delete/:id
  */
 router.delete("/api/note/delete/:id", deleteNoteHandler);
+
+/**
+ * Muistiinpanon PDF-vientireitti
+ * GET /api/note/:id/export
+ */
+router.get("/api/note/:id/export", generateNotePdf);
 
 export default router;

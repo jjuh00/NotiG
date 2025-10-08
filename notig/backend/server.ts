@@ -1,5 +1,5 @@
-import app from "./app.ts";
-import { initializeDatabase } from "./database/db.ts";
+import app from './app.ts';
+import { initializeDatabase } from './database/db.ts';
 
 const PORT = 3003;
 const HOST = "127.0.0.1";

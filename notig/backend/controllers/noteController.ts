@@ -3,6 +3,8 @@ import { getUserNotes, getNoteById, createNote, updateNote, deleteNote } from '.
 import { findUserById } from '../database/userSQL.ts';
 import type { NoteUpdate } from '../types/Note.ts';
 import { convertNotesFromDbFormat, convertNoteFromDbFormat, convertNoteToDbFormat } from '../utils/noteConverter.ts';
+import PDFDocument from "pdfkit";
+
 
 /**
  * Hakee käyttäjän muistiinpanot.
@@ -144,5 +146,74 @@ export async function deleteNoteHandler(req: Request, res: Response): Promise<vo
     } catch (error) {
         console.error("Muistiinpanon poistamisessa ilmeni virhe:", error);
         res.status(500).json({ status: "error", message: "Palvelinvirhe muistiinpanon poistamisessa: " + error });
+    }
+}
+
+/**
+ * Käsittelee muistiinpanon viennin PDF-tiedostoksi.
+ * @param {Request} req - Expressin Request-olio (sisältää muistiinpanon ID:n)
+ * @param {Response} res - Expressin Response-olio
+ * @return {Promise<void>}
+ */
+export async function generateNotePdf(req: Request, res: Response): Promise<void> {
+    const { id } = req.params;
+
+    try {
+        const dbNote = await getNoteById(id);
+        if (!dbNote) {
+            res.status(404).json({ status: "error", message: "Muistiinpanoa ei löytynyt" });
+            return;
+        }
+
+        const note = convertNoteFromDbFormat(dbNote);
+
+        // Luodaan PDF-dokumentti
+        const doc = new PDFDocument();
+
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", `attachment; filename="${note.title}.pdf`);
+
+        doc.pipe(res);
+
+        // Määritetään fontti PDFKitin tukemiin fontteihin
+        let pdfFont = "Helvetica"; // Oletusfontti
+        if (note.fontFamily.includes("Times")) {
+            pdfFont = "Times-Roman";
+        } else if (note.fontFamily.includes("Courier")) {
+            pdfFont = "Courier";
+        } else if (note.fontFamily === "Arial" || note.fontFamily === "Inter" || note.fontFamily === "Verdana") {
+            pdfFont = "Helvetica";
+        }
+
+        // Määritetään fontin variantti (paksu, kursivoitu)
+        let fontVariant = pdfFont;
+        if (note.isBold && note.isItalic) {
+            fontVariant = `${pdfFont}-BoldOblique`;
+        } else if (note.isBold) {
+            fontVariant = `${pdfFont}-Bold`;
+        } else if (note.isItalic) {
+            fontVariant = `${pdfFont}-Oblique`;
+        }
+
+        // Lisätään otsikko
+        doc.fontSize(20); // Otsikon fonttikoko, oletus 20 (sama kuin note-editor.css note-title font-size)
+        doc.text(note.title);
+
+        // Määritetään sisällön fontti, koko ja väri
+        doc.font(fontVariant);
+        doc.fontSize(note.fontSize);
+        doc.fillColor(note.color);
+
+        doc.moveDown(); // Lisää tyhjää otsikon ja sisällön väliin
+
+        // Lisätään sisältö
+        doc.text(note.content || '', {
+            underline: note.isUnderline
+        });
+
+        doc.end()
+    } catch (error) {
+        console.error("Muistiinpanon PDF-viennissä ilmeni virhe:", error);
+        res.status(500).json({ status: "error", message: "Palvelinvirhe muistiinpanon PDF-viennissä: " + error });
     }
 }
