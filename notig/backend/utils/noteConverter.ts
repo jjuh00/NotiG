@@ -1,4 +1,4 @@
-import type { Note, NoteUpdate } from '../types/Note.ts';
+import type { NoteUpdate } from '../types/Note.ts';
 
 /**
  * Muuntaa muistiinpanon frontend-muodosta backend-muotoon.

@@ -1,5 +1,4 @@
 import { getDatabase } from './db.ts';
-import type { Note } from '../types/Note.ts';
 
 // Backend-muotoinen Note-tyyppi (snake_case-muotoilu)
 interface DbNote {
