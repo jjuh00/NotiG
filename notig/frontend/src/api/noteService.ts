@@ -23,10 +23,15 @@ interface CreateNoteResponse {
 /**
  * Hakee käyttäjän muistiinpanot.
  * @param {string} userId - Käyttäjän ID
+ * @param {string} [searchQuery] - Hakukysely (valinnainen)
  * @returns {Promise<Note[]>} - Muistiinpanot
  */
-export async function getUserNotes(userId: string): Promise<Note[]> {
-    const response = await axios.get(`${API_URL}/note/user/${userId}`);
+export async function getUserNotes(userId: string, searchQuery?: string): Promise<Note[]> {
+    let url = `${API_URL}/note/user/${userId}`;
+    if (searchQuery) {
+        url += `?search=${encodeURIComponent(searchQuery)}`;
+    }
+    const response = await axios.get(url);
     return response.data.notes;
 }
 

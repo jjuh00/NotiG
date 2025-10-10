@@ -15,6 +15,7 @@ import PDFDocument from "pdfkit";
 export async function getNotesByUser(req: Request, res: Response): Promise<void> {
     try {
         const { userId } = req.params;
+        const searchQuery = req.query.search as string | undefined;
 
         if (!userId) {
             res.status(400).json({ status: "error", message: "Käyttäjä ID puuttuu" });
@@ -27,7 +28,7 @@ export async function getNotesByUser(req: Request, res: Response): Promise<void>
             return;
         }
 
-        const userNotes = await getUserNotes(userId);
+        const userNotes = await getUserNotes(userId, searchQuery);
 
         res.status(200).json({ status: "ok", notes: convertNotesFromDbFormat(userNotes) });
     } catch (error) {
@@ -84,9 +85,9 @@ export async function createNoteHandler(req: Request, res: Response): Promise<vo
             user_id: userId,
             title,
             content,
-            font_family: fontFamily || "Inter",
-            font_size: fontSize || 16,
-            color: color || "whitesmoke",
+            font_family: fontFamily,
+            font_size: fontSize,
+            color: color,
             is_bold: !!isBold,
             is_italic: !!isItalic,
             is_underline: !!isUnderline,

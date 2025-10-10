@@ -2,8 +2,8 @@ import { getDatabase } from './db.ts';
 
 // Backend-muotoinen Note-tyyppi (snake_case-muotoilu)
 interface DbNote {
-    id: number;
-    user_id: number;
+    id: string;
+    user_id: string;
     title: string;
     content?: string;
     font_family: string;
@@ -17,20 +17,24 @@ interface DbNote {
     updated_at: string | null;
 }
 
-
 /**
  * Hakee käyttäjän muistiinpanot.
  * @param {string} userId - Käyttäjän ID
+ * @param {string} [searchQuery] - Hakukysely (valinnainen)
  * @return {Promise<DbNote[]>} - Lista muistiinpanoista
  */
-export async function getUserNotes(userId: string): Promise<DbNote[]> {
+export async function getUserNotes(userId: string, searchQuery?: string): Promise<DbNote[]> {
     const db = getDatabase();
-    return await db.all<DbNote[]>(
-        `SELECT id, title, SUBSTR(content, 1, 50) as preview, font_family, font_size, color, 
+    let sql = `SELECT id, title, SUBSTR(content, 1, 50) AS preview, font_family, font_size, color,
         is_bold, is_italic, is_underline, is_pinned, created_at, updated_at
-        FROM notes WHERE user_id = ? 
-        ORDER BY updated_at DESC, created_at DESC`, [userId]
-    );
+        FROM notes WHERE user_id = ?`;
+    let params: (number | string)[] = [userId];
+    if (searchQuery) {
+        sql += " AND (title LIKE ? OR content LIKE ?)";
+        params.push(`%${searchQuery}%`, `%${searchQuery}%`);
+    }
+    sql += " ORDER BY is_pinned DESC, updated_at DESC, created_at DESC";
+    return await db.all<DbNote[]>(sql, params);
 }
 
 /**
@@ -40,14 +44,12 @@ export async function getUserNotes(userId: string): Promise<DbNote[]> {
  */
 export async function getNoteById(noteId: string): Promise<DbNote | undefined> {
     const db = getDatabase();
-    return await db.get<DbNote>(
-        `SELECT * FROM notes WHERE id = ?`, [noteId]
-    );
+    return await db.get<DbNote>("SELECT * FROM notes WHERE id = ?", [noteId]);
 }
 
 /**
  * Luo uuden muistiinpanon tietokantaan.
- * @param {Omit<DbNote, "id" | "created_at" | "updated_at"> & { content: string}} note - Muistiinpanon tiedot
+ * @param {Omit<DbNote, "id" | "created_at" | "updated_at"> & { content: string }} note - Muistiinpanon tiedot
  * @return {Promise<number>} - Luodun muistiinpanon ID:n
  */
 export async function createNote(note: {
@@ -91,7 +93,7 @@ export async function updateNote(noteId: string, updates: {
 }): Promise<void> {
     const db = getDatabase();
     let fields: string[] = [];
-    let values: unknown[] = [];
+    let values: (string | number | boolean)[] = [];
 
     for (const [key, value] of Object.entries(updates)) {
         if (value !== undefined) {
@@ -122,7 +124,5 @@ export async function updateNote(noteId: string, updates: {
  */
 export async function deleteNote(noteId: string): Promise<void> {
     const db = getDatabase();
-    await db.run(
-        `DELETE FROM notes WHERE id = ?`, [noteId]
-    );
+    await db.run("DELETE FROM notes WHERE id = ?", [noteId]);
 }

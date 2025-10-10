@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { FormEvent } from 'react';
 import type { Note } from '../types/Note.ts';
 import { Header, Sidebar, Footer } from '../components/PageLayout.tsx';
 import { getUserNotes, updateNote, deleteNote, exportNoteAsPdf } from '../api/noteService.ts';
@@ -26,23 +27,41 @@ const Dashboard: React.FC = () => {
 
     /**
      * Lataa käyttäjän muistiinpanot palvelimelta.
-     * 
+     * @param {string} [search] - Hakukysely (valinnainen)
      */
-    const loadNotes = async () => {
+    const loadNotes = async (search: string = '') => {
         try {
-            const fetchedNotes = await getUserNotes(userId!);
+            const fetchedNotes = await getUserNotes(userId!, search);
             setNotes(fetchedNotes);
+            if (search && fetchedNotes.length === 0) {
+                alert(`Ei löytynyt muistiinpanoja hakusanalla ${search}`);
+            }
         } catch (error) {
             console.error("Muistiinpanojen latausvirhe:", error);
+            alert("Muistiinpanojen lataus epäonnistui");
+            setNotes([]);
         }
     };
 
     /**
-     * Käsittelee hakukyselyn muutokset.
-     * @param {string} query - Hakukysely
+     * Käsittelee hakulomakkeen lähetyksen.
+     * @param {FormEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
      */
-    const handleSearch = (query: string) => {
-        setSearchQuery(query);
+    const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!searchQuery.trim()) {
+            alert("Hakukenttä ei voi olla tyhjä");
+            return;
+        }
+        loadNotes(searchQuery);
+    };
+
+    /**
+     * Käsittelee hakukentän tyhjentämisen.
+     */
+    const handleClearSearch = () => {
+        setSearchQuery('');
+        loadNotes();
     };
 
     /**
@@ -128,7 +147,12 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="notig-dashboard">
-            <Header onSearch={handleSearch} />
+            <Header 
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                onSearch={handleSearchSubmit}
+                onClearSearch={handleClearSearch}
+            />
             <div className="dashboard-content">
                 <Sidebar 
                     notes={notes}
