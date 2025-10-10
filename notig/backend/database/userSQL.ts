@@ -1,7 +1,7 @@
 import { getDatabase } from './db.ts';
 
 interface User {
-    id: string;
+    id: number;
     username: string;
     email: string;
     password: string;
@@ -18,8 +18,7 @@ interface User {
  */
 export async function createUser(username: string, email: string, hashedPassword: string): Promise<number> {
     const db = getDatabase();
-    const result = await db.run(
-        `INSERT INTO users (username, email, password) VALUES (?, ?, ?)`,
+    const result = await db.run("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
         [username, email, hashedPassword]
     );
     return result.lastID!;
@@ -32,9 +31,7 @@ export async function createUser(username: string, email: string, hashedPassword
  */
 export async function findUserByEmail(email: string): Promise<User | undefined> {
     const db = getDatabase();
-    return await db.get<User>(
-        `SELECT * FROM users WHERE email = ?`, [email]
-    );
+    return await db.get<User>("SELECT * FROM users WHERE email = ?", [email]);
 }
 
 /**
@@ -44,9 +41,7 @@ export async function findUserByEmail(email: string): Promise<User | undefined> 
  */
 export async function findUserByUsername(username: string): Promise<User | undefined> {
     const db = getDatabase();
-    return await db.get<User>(
-        `SELECT * FROM users WHERE username = ?`, [username]
-    );
+    return await db.get<User>("SELECT * FROM users WHERE username = ?", [username]);
 }
 
 /**
@@ -56,9 +51,7 @@ export async function findUserByUsername(username: string): Promise<User | undef
  */
 export async function findUserById(id: string): Promise<User | undefined> {
     const db = getDatabase();
-    return await db.get<User>(
-        `SELECT * FROM users WHERE id = ?`, [id]
-    );
+    return await db.get<User>("SELECT * FROM users WHERE id = ?", [id]);
 }
 
 /**
@@ -73,22 +66,19 @@ export async function updateUser(id: string, username: string, email: string, ha
     const db = getDatabase();
     const currentDate = new Date().toISOString();
 
-    await db.run(
-        `UPDATE users SET username = ?, email = ?, password = ?, updated_at = ? WHERE id = ?`,
+    await db.run("UPDATE users SET username = ?, email = ?, password = ?, updated_at = ? WHERE id = ?",
         [username, email, hashedPassword, currentDate, id]
     );
 }
 
 /**
  * Poistaa käyttäjän kaikki muistiinpanot.
- * @param {string} userId - Käyttäjän ID
+ * @param {string} id - Käyttäjän ID
  * @returns {Promise<void>}
  */
-export async function deleteUserNotes(userId: string): Promise<void> {
+export async function deleteUserNotes(id: string): Promise<void> {
     const db = getDatabase();
-    await db.run(
-        `DELETE FROM notes WHERE user_id = ?`, [userId]
-    );
+    await db.run("DELETE FROM notes WHERE user_id = ?", [id]);
 }
 
 /**
@@ -98,9 +88,7 @@ export async function deleteUserNotes(userId: string): Promise<void> {
  */
 export async function deleteUser(id: string): Promise<void> {
     const db = getDatabase();
-    await db.run(
-        `DELETE FROM users WHERE id = ?`, [id]
-    );
+    await db.run("DELETE FROM users WHERE id = ?", [id]);
 }
 
 export type { User };
