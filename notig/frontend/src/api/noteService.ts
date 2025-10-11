@@ -82,7 +82,7 @@ export async function deleteNote(noteId: string): Promise<{ status: string }> {
  * @returns {Promise<Blob>} - PDF-tiedosto Blob-muodossa
  */
 export async function exportNoteAsPdf(noteId: string): Promise<Blob> {
-    const response = await axios.get(`${API_URL}/note/${noteId}/export`, {
+    const response = await axios.get(`${API_URL}/note/export/${noteId}`, {
         responseType: "blob"
     });
     return response.data;

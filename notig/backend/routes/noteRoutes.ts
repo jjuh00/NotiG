@@ -44,6 +44,6 @@ router.delete("/api/note/delete/:id", deleteNoteHandler);
  * Muistiinpanon PDF-vientireitti
  * GET /api/note/:id/export
  */
-router.get("/api/note/:id/export", generateNotePdf);
+router.get("/api/note/export/:id", generateNotePdf);
 
 export default router;
