@@ -23,7 +23,7 @@ notig/
 │   └── src/
 │       ├── api/
 │       ├── components/
-│       ├── context/t
+│       ├── context/
 │       ├── pages/
 │       ├── hooks/
 │       ├── styles/
