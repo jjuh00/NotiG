@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import type { FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import type { FormEvent } from 'react';
 import { registerUser } from '../api/authenticationService.ts';
 import '../styles/register.css';
 
@@ -74,7 +74,7 @@ const Register: React.FC = () => {
             }
         } catch (error: any) {
             console.error("Rekisteröitymisvirhe:", error);
-            setError(error.response?.data?.message || "Rekisteröityminen epäonnistui");
+            setError("Rekisteröityminen epäonnistui");
         } finally {
             setLoading(false);
         }
@@ -88,7 +88,7 @@ const Register: React.FC = () => {
 
             <form className="register-form" onSubmit={handleRegister}>
                 <div className="register-group">
-                    <label className="register-label">Käyttäjänimi</label>
+                    <label>Käyttäjänimi</label>
                     <input 
                         type="text"
                         value={formData.username}
@@ -102,7 +102,7 @@ const Register: React.FC = () => {
                 </div>
 
                 <div className="register-group">
-                    <label className="register-label">Sähköposti</label>
+                    <label>Sähköposti</label>
                     <input 
                         type="email"
                         value={formData.email}
@@ -115,7 +115,7 @@ const Register: React.FC = () => {
                 </div>
 
                 <div className="register-group">
-                    <label className="register-label">Salasana</label>
+                    <label>Salasana</label>
                     <input
                         type="password"
                         value={formData.password}
@@ -129,7 +129,7 @@ const Register: React.FC = () => {
                 </div>
 
                 <div className="register-group">
-                    <label className="register-label">Vahvista salasana</label>
+                    <label>Vahvista salasana</label>
                     <input
                         type="password"
                         value={formData.confirmPassword}

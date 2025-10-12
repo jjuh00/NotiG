@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { UserContext } from '../context/UserContext.tsx';
 
 /**
- * Hookki käyttäjätiedon käyttämiseen kontekstista.
+ * Hook käyttäjätiedon käyttämiseen kontekstista.
  * @returns {UserContextType} - Käyttäjätiedot ja toiminnot
  */
 const useUser = () => {

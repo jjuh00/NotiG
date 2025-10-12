@@ -33,67 +33,17 @@
     background-color: #2c2d2d;
     border: 1px solid darkslategray;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(black, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .profile-group {
     margin-bottom: 1.5rem;
 }
 
-.profile-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: lightgray;
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-}
-
-.profile-input {
-    padding: 0.875rem 1rem;
-    width: 100%;
-    background-color: #1e1f1f;
-    color: whitesmoke;
-    border: 2px solid darkslategray;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.25s ease;
-}
-
-/* Reunavärin ja varjon muutos, kun käyttäjä on kentässä */ 
-.profile-input:focus {
-    border-color: gold;
-    box-shadow: 0 0 0 3px rgba(gold, 0.1);
-    outline: none;
-}
-
-/* Reunavärin muutos, kun käyttäjä vie hiiren kentän päälle */
-.profile-input:hover:not(:disabled) {
-    border-color: dimgray;
-}
-
-.profile-input:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.profile-input::placeholder {
-    color: gray;
-}
-
-.error-message {
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    background-color: rgba(salmon, 0.1);
-    color: salmon;
-    font-size: 14px;
-    border-radius: 4px;
-}
-
 .success-message {
     padding: 0.75rem;
     margin-bottom: 1rem;
-    background-color: rgba(lightgreen, 0.1);
+    background-color: rgba(144, 238, 144, 0.1);
     color: lightgreen;
     font-size: 14px;
     border-radius: 4px;
@@ -121,7 +71,7 @@
 }
 
 .delete-button:hover:not(:disabled) {
-    background: rgba(salmon, 0.1);
+    background: rgba(250, 128, 114, 0.1);
     border-color: salmon;
 }
 
@@ -173,7 +123,7 @@
 }
 
 .save-button:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(darkorange, 0.3);
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.3);
     transform: translateY(-2px);
 }
 
@@ -198,7 +148,7 @@
     z-index: 1000;
     align-items: center;
     justify-content: center;
-    background-color: rgba(black, 0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     animation: fadeIn 0.25s ease;
 }
 
@@ -219,7 +169,7 @@
     background-color: #2c2d2d;
     border: 1px solid darkslategray;
     border-radius: 12px;
-    box-shadow: 0 12px 48px rgba(black, 0.6);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
     animation: slideUp 0.3s ease;
 }
 
@@ -250,37 +200,6 @@
 
 .modal-group {
     margin-bottom: 1.5rem;
-}
-
-.modal-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: lightgray;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.modal-input {
-    padding: 0.875rem 1rem;
-    width: 100%;
-    background-color: #1e1f1f;
-    color: whitesmoke;
-    font-size: 16px;
-    border: 2px solid darkslategray;
-    border-radius: 8px;
-    transition: all 0.25s ease;
-}
-
-/* Reunavärin ja varjon muutos, kun käyttäjä on kentässä */
-.modal-input:focus {
-    border-color: gold;
-    box-shadow: 0 0 0 3px rgba(gold, 0.1);
-    outline: none;
-}
-
-.modal-input:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
 }
 
 .modal-buttons {
@@ -332,7 +251,7 @@
 }
 
 .modal-confirm-button:hover:not(:disabled) {
-    box-shadow: 0 4px 16px rgba(gold, 0.3);
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
     transform: translateY(-1px);
 }
 

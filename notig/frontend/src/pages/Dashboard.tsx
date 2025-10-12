@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { FormEvent } from 'react';
 import type { Note } from '../types/Note.ts';
 import { Header, Sidebar, Footer } from '../components/PageLayout.tsx';
 import { getUserNotes, updateNote, deleteNote, exportNoteAsPdf } from '../api/noteService.ts';
@@ -18,7 +17,11 @@ const Dashboard: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [notes, setNotes] = useState<Note[]>([]);
     const [noteMenuId, setNoteMenuId] = useState<string | null>(null);
+    const [error, setError] = useState<string>('');
 
+    /**
+     * Lataa käyttäjän muistiinpanot, kun komponentti ladataan.
+     */
     useEffect(() => {
         if (userId) {
             loadNotes();
@@ -26,40 +29,55 @@ const Dashboard: React.FC = () => {
     }, [userId]);
 
     /**
-     * Lataa käyttäjän muistiinpanot palvelimelta.
-     * @param {string} [search] - Hakukysely (valinnainen)
-     */
-    const loadNotes = async (search: string = '') => {
+     * Lataa käyttäjän muistiinpanot palvelimelta     */
+    const loadNotes = async () => {
         try {
-            const fetchedNotes = await getUserNotes(userId!, search);
-            setNotes(fetchedNotes);
-            if (search && fetchedNotes.length === 0) {
-                alert(`Ei löytynyt muistiinpanoja hakusanalla ${search}`);
+            const fetchedNotes = await getUserNotes(userId!);
+            if (fetchedNotes.length === 0) {
+                setError("Muistiinpanojen lataus epäonnistui");
+                setNotes([]);
+            } else {
+                setError('');
+                setNotes(fetchedNotes);
             }
         } catch (error) {
             console.error("Muistiinpanojen latausvirhe:", error);
-            alert("Muistiinpanojen lataus epäonnistui");
-            setNotes([]);
+            setError("Muistiinpanojen lataus epäonnistui");
         }
     };
 
     /**
      * Käsittelee hakulomakkeen lähetyksen.
-     * @param {FormEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
+     * @param {string} query - Hakukysely
      */
-    const handleSearchSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (!searchQuery.trim()) {
-            alert("Hakukenttä ei voi olla tyhjä");
+    const handleSearch = async (query: string) => {
+        if (!query.trim()) {
+            setError("Haku ei voi olla tyhjä");
+            setNotes([]);
             return;
         }
-        loadNotes(searchQuery);
+        
+        setSearchQuery(query);
+        try {
+            const results = await getUserNotes(userId!, query);
+            if (results.length === 0) {
+                setError("Ei löytynyt vastaavia muistiinpanoja");
+                setNotes([]);
+            } else {
+                setError('');
+                setNotes(results);
+            }
+        } catch (error) {
+            console.error("Muistiinpanojen hakuvirhe:", error);
+            setError("Muistiinpanojen haku epäonnistui");
+        }
     };
 
     /**
-     * Käsittelee hakukentän tyhjentämisen.
+     * Tyhjentää hakukentän ja lataa käyttäjän kaikki muistiinpanot.
      */
     const handleClearSearch = () => {
+        setError('');
         setSearchQuery('');
         loadNotes();
     };
@@ -148,9 +166,8 @@ const Dashboard: React.FC = () => {
     return (
         <div className="notig-dashboard">
             <Header 
+                onSearch={handleSearch} 
                 searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                onSearch={handleSearchSubmit}
                 onClearSearch={handleClearSearch}
             />
             <div className="dashboard-content">
@@ -167,8 +184,11 @@ const Dashboard: React.FC = () => {
                         </button>
                     </div>
 
-                    {/* Jos käyttäjä ei ole vielä tehnyt muistiinpanoja, näytetään käyttäjälle kuvitus ja viesti */}
-                    {notes.length === 0 ? (
+                    {error ? (
+                        <div className="notes-error">
+                            <p className="error-message">{error}</p>
+                        </div>
+                    ) : notes.length === 0 ? (
                         <div className="empty-state">
                             <div className="empty-state-illustration">
                                 <svg>
@@ -186,7 +206,6 @@ const Dashboard: React.FC = () => {
                             </button>
                         </div>
                     ) : (
-                        // Muistiinpanot ruudukkoasetelmassa, jos käyttäjä on tehnyt muistiinpanoja
                         <div className="notes-grid">
                             {notes.map((note) => (
                                 <div key={note.id} className="note-card">
@@ -205,7 +224,7 @@ const Dashboard: React.FC = () => {
                                             {noteMenuId === note.id && (
                                                 <div className="note-menu">
                                                     <button onClick={() => handlePinNote(note.id, note.isPinned)}>
-                                                        {note.isPinned ? "Poista kiinnitys" : "Kiinnitä"}
+                                                        {note.isPinned ? 'Poista kiinnitys' : 'Kiinnitä'}
                                                     </button>
                                                     <button onClick={() => handleEditNote(note.id)}>Muokkaa</button>
                                                     <button onClick={() => handleDeleteNote(note.id)}>Poista</button>

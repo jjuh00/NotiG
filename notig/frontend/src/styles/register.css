@@ -33,7 +33,7 @@
     background-color: #2c2d2d;
     border: 1px solid darkslategray;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(black, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .register-group {
@@ -42,57 +42,6 @@
 
 .register-group:last-of-type {
     margin-bottom: 1rem;
-}
-
-.register-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: lightgray;
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-}
-
-.register-input {
-    padding: 0.875rem 1rem;
-    width: 100%;
-    background-color: #1e1f1f;
-    color: whitesmoke;
-    border: 2px solid darkslategray;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: all 0.25s ease;
-}
-
-/* Reunavärin ja varjon muutos, kun käyttäjä on kentässä */ 
-.register-input:focus {
-    border-color: lightcoral;
-    box-shadow: 0 0 0 3px rgba(lightcoral, 0.1);
-}
-
-/* Reunavärin muutos, kun käyttäjä vie hiiren kentän päälle */
-.register-input:hover:not(:disabled) {
-    border-color: darkgray;
-}
-
-.register-input:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.register-input::placeholder {
-    color: gray;
-}
-
-.error-message {
-    margin-bottom: 1rem;
-    padding: 0.75rem;
-    background-color: rgba(salmon, 0.1);
-    border: 1px solid salmon;
-    border-radius: 8px;
-    color: salmon;
-    font-size: 14px;
-    text-align: center;
 }
 
 .register-button {
@@ -111,7 +60,7 @@
 }
 
 .register-button:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(salmon, 0.3);
+    box-shadow: 0 6px 20px rgba(240, 128, 128, 0.3);
     transform: translateY(-2px);
 }
 

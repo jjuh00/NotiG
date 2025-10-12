@@ -32,5 +32,5 @@ createRoot(document.getElementById('root')!).render(
         <AppRoutes />
       </Router>
     </UserProvider>
-  </StrictMode>,
+  </StrictMode>
 );

@@ -24,7 +24,7 @@
     display: flex;
     margin-bottom: 2rem;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .content-header h1 {
@@ -51,13 +51,13 @@
     font-size: 18px;
     border: none;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(orangered, 0.3);
+    box-shadow: 0 4px 12px rgba(255, 69, 0, 0.3);
     cursor: pointer;
     transition: all 0.25s ease;
 }
 
 .create-note-button:hover {
-    box-shadow: 0 6px 20px rgba(orangered, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 69, 0, 0.4);
     transform: translateY(-2px);
 }
 
@@ -68,6 +68,14 @@
 .create-note-button i {
     font-size: 20px;
     line-height: 1;
+}
+
+.notes-error {
+    display: flex;
+    margin-right: 2rem;
+    min-height: 400px;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Tyylit, kun ei ole muistiinpanoja */
@@ -157,7 +165,7 @@ path {
 
 .note-card:hover {
     border-color: dimgray;
-    box-shadow: 0 8px 24px rgba(black, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     transform: translateY(-4px);
 }
 
@@ -223,7 +231,7 @@ path {
     background-color: #2c2d2d;
     border: 2px solid darkslategray;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(black, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .note-menu button {

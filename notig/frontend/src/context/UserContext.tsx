@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 
 interface UserContextType {
@@ -22,19 +22,12 @@ const UserContext = createContext<UserContextType>({
  * @returns JSX.Element
  */
 const UserProvider: React.FC<PropsWithChildren<{}>> = ({ children }: PropsWithChildren<{}>) => {
-    const [userId, setUserId] = useState<string | null>(null);
-    const [username, setUsername] = useState<string | null>(null);
-
     // Ladataan käyttäjätiedot localStoragesta
-    useEffect(() => {
-        const storedUserId = localStorage.getItem("userId");
-        const storedUsername = localStorage.getItem("username");
+    const storedUserId = localStorage.getItem("userId");
+    const storedUsername = localStorage.getItem("username");
 
-        if (storedUserId && storedUsername) {
-            setUserId(storedUserId);
-            setUsername(storedUsername);
-        }
-    }, []);
+    const [userId, setUserId] = useState<string | null>(storedUserId);
+    const [username, setUsername] = useState<string | null>(storedUsername);
 
     /**
      * Asettaa käyttäjätiedot ja tallentaa ne localStorageen.

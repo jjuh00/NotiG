@@ -37,7 +37,7 @@
     transition: all 0.25s ease;
 }
 
-.editor-sectl:hover:not(:disabled) {
+.editor-select:hover:not(:disabled) {
     border-color: dimgray;
 }
 
@@ -90,7 +90,7 @@
 
 .editor-title:focus {
     border-color: orangered;
-    box-shadow: 0 0 0 3px rgba(orangered, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.1);
 }
 
 .editor-title:hover:not(:disabled) {
@@ -121,7 +121,7 @@
 
 .editor-content:focus {
     border-color: orangered;
-    box-shadow: 0 0 0 3px rgba(orangered, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.1);
 }
 
 .editor-content:hover:not(:disabled) {

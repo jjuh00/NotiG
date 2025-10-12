@@ -1,6 +1,6 @@
 export interface Note {
-    id?: number;
-    userId?: number;
+    id?: string;
+    userId?: string;
     title: string;
     content: string;
     fontFamily: string;

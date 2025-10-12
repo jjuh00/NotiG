@@ -32,9 +32,6 @@ p {
     line-height: 1.6;
 }
 
-i {
-    font-size: inherit
-}
 
 a {
     color: orangered;
@@ -54,12 +51,89 @@ button {
     outline: none;
 }
 
-input, textarea {
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: lightgray;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+input, textarea, select {
+    background-color: #1e1f1f;
+    color: lightgray;
     font-family: inherit;
     outline: none;
 }
 
-/* Poistetaan oletus korostusreunus käytöstä */
+/* Kuvakkeiden tasaus globaalisti */
+i[class^="fi-"], i[class=" fi-"]{
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+    line-height: 1;
+}
+
+button i, a i {
+    position: relative;
+    top: 0.1rem;
+}
+
+.login-input, .register-input, .profile-input, .modal-input {
+    padding: 0.875rem 1rem;
+    width: 100%;
+    background-color: #1e1f1f;
+    color: lightgray;
+    font-size: 14px;
+    border: 2px solid darkslategray;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+}
+
+.login-input:hover:not(:disabled), 
+.register-input:hover:not(:disabled), 
+.profile-input:hover:not(:disabled),
+.modal-input:hover:not(:disabled) {
+    border-color: dimgray;
+}
+
+.login-input:focus, 
+.register-input:focus, 
+.profile-input:focus,
+.modal-input:focus {
+    border-color: orangered;
+    box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.1);
+}
+
+.login-input:disabled, 
+.register-input:disabled, 
+.profile-input:disabled,
+.modal-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login-input::placeholder, 
+.register-input::placeholder, 
+.profile-input::placeholder,
+.modal-input::placeholder {
+    color: gray;
+}
+
+.error-message {
+    padding: 0.75rem;
+    margin: 1rem 0;
+    text-align: center;
+    background-color: rgba(255, 69, 0, 0.1);
+    color: salmon;
+    font-size: 14px;
+    font-weight: 500;
+    border-left: 1px solid salmon;
+    border-radius: 6px;
+}
+
 *:focus {
     outline: none;
 }

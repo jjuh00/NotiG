@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import type { Note } from '../types/Note.ts';
-import type { FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser.ts';
 import { logoutUser } from '../api/userService.ts';
 import '../styles/page-layout.css';
 
 // Header-propsit
 interface HeaderProps {
+    onSearch: (searchQuery: string) => void;
     searchQuery: string;
-    setSearchQuery: (value: string) => void;
-    onSearch: (e: FormEvent<HTMLFormElement>) => void;
     onClearSearch: () => void;
 }
 
@@ -23,13 +21,9 @@ interface SidebarProps {
 /**
  * Header-komponentti, joka sisältää sovelluksen nimen, hakupalkin ja käyttäjämenun.
  * @param {HeaderProps} props - Komponentin propsit
- * @param {string} props.searchQuery - Hakukentän arvo
- * @param {(value: string) => void} props.setSearchQuery - Funktio hakukentän arvon asettamiseen
- * @param {(e: FormEvent<HTMLFormElement>) => void} props.onSearch - Funktio hakulomakkeen lähetykseen
- * @param {() => void} props.onClearSearch - Funktio hakukentän tyhjentämiseen
  * @returns JSX.Element
  */
-const Header: React.FC<HeaderProps> = ({ searchQuery, setSearchQuery, onSearch, onClearSearch }: HeaderProps) => {
+const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery, onClearSearch }: HeaderProps) => {
     const navigate = useNavigate();
     const { clearUser } = useUser();
     const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
@@ -39,12 +33,19 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, setSearchQuery, onSearch, 
     }
 
     /**
+     * Käsittelee tyhjennä-napin klikkauksen.
+     */
+    const handleClearClick = () => {
+        onClearSearch();
+    };
+
+    /**
      * Käsittelee navigoinnin käyttäjäasetuksiin.
      */
     const handleSettings = () => {
         setIsUserMenuOpen(false);
         navigate("/settings");
-    }
+    };
 
     /**
      * Käsittelee käyttäjän uloskirjautumisen.
@@ -68,21 +69,21 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, setSearchQuery, onSearch, 
 
             <div className="header-center">
                 <div className="search-bar">
-                    <form className="search-form" onSubmit={onSearch}>
-                        <button type="button" className="clear-button" onClick={onClearSearch}>
+                    {searchQuery && (
+                        <button
+                            className="clear-button"
+                            onClick={handleClearClick}
+                        >
                             <i className="fi fi-br-cross-small"></i>
                         </button>
-                        <input 
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="search-input"
-                            placeholder="Hae muistiinpanoja..."
-                        />
-                        <button type="submit" className="search-button">
-                            <i className="fi fi-br-search"></i>
-                        </button>
-                    </form>
+                    )}
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => onSearch(e.target.value)}
+                        className="search-input"
+                        placeholder="Hae muistiinpanoja..."
+                    />
                 </div>
             </div>
 
@@ -171,7 +172,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notes, onNoteSelected }: SidebarProps
  * @returns JSX.Element
  */
 const Footer: React.FC = () => {
-    const appVersion = "1.3.3";
+    const appVersion = "1.3.4";
 
     return (
         <footer className="notig-footer">

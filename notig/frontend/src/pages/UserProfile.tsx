@@ -64,11 +64,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
             });
         } catch (error) {
             console.error("Käyttäjätietojen latausvirhe:", error);
-            setError("Käyttäjätietojen lataus epäonnistui. Ohjataan kirjautumissivulle 3 sekunnin kuluttua");
-            setTimeout(async () => {
-                await navigate('/');
-                clearUser();
-            }, 3000);
+            setError("Käyttäjätietojen lataus epäonnistui. Kokeile kirjautua ulos ja takaisin sisään.");
         }
     };
 
@@ -227,7 +223,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
 
             <form className="user-profile-form" onSubmit={handleSaveClick}>
                 <div className="profile-group">
-                    <label className="profile-label">Käyttäjänimi</label>
+                    <label>Käyttäjänimi</label>
                     <input 
                         type="text"
                         value={formData.username}
@@ -241,7 +237,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
                 </div>
                     
                 <div className="profile-group">
-                    <label className="profile-label">Sähköposti</label>
+                    <label>Sähköposti</label>
                     <input 
                         type="email"
                         value={formData.email}
@@ -254,7 +250,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
                 </div>
 
                 <div className="profile-group">
-                    <label className="profile-label">Uusi salasana (jätä tyhjäksi, jos et halua vaihtaa)</label>
+                    <label>Uusi salasana (jätä tyhjäksi, jos et halua vaihtaa)</label>
                     <input 
                         type="password"
                         value={formData.password}
@@ -267,7 +263,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
                 </div>
 
                 <div className="profile-group">
-                    <label className="profile-label">Vahvista uusi salasana</label>
+                    <label>Vahvista uusi salasana</label>
                     <input 
                         type="password"
                         value={formData.confirmPassword}
@@ -302,7 +298,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
                         <p className="modal-description">Syötä nykyinen salasanasi vahvistaaksesi muutokset.</p>
 
                         <div className="modal-group">
-                            <label className="modal-label">Nykyinen salasana</label>
+                            <label>Nykyinen salasana</label>
                             <input 
                                 type="password"
                                 value={currentPassword}

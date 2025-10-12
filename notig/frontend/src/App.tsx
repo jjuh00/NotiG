@@ -39,7 +39,7 @@ const App: React.FC = () => {
             }
         } catch (error: any) {
             console.error("Kirjautumisvirhe:", error);
-            setError(error.response?.data?.message || "Kirjautuminen epäonnistui");
+            setError("Kirjautuminen epäonnistui");
         } finally {
             setLoading(false);
         }
@@ -53,7 +53,7 @@ const App: React.FC = () => {
 
             <form className="login-form" onSubmit={handleLogin}>
                 <div className="login-group">
-                    <label className="login-label">Sähköposti</label>
+                    <label>Sähköposti</label>
                     <input
                         type="email"
                         value={email}
@@ -66,7 +66,7 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="login-group">
-                    <label className="login-label">Salasana</label>
+                    <label>Salasana</label>
                     <input
                         type="password"
                         value={password}
