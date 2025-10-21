@@ -35,7 +35,7 @@ const App: React.FC = () => {
                 navigate("/dashboard");
             } else {
                 console.error("Kirjautumisvirhe:", response.message);
-                setError("Kirjautuminen epäonnistui");
+                setError("Kirjautuminen epäonnistui. Tarkista sähköposti ja salasana");
             }
         } catch (error: any) {
             console.error("Kirjautumisvirhe:", error);

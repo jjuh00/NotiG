@@ -168,7 +168,7 @@ export async function updateProfile(req: Request, res: Response): Promise<void> 
         if (email && email !== user.email) {
             const existingUser = await findUserByEmail(email);
             if (existingUser) {
-                res.status(400).json({ status: "error", message: "Säjköposti on jo käytössä" });
+                res.status(400).json({ status: "error", message: "Sähköposti on jo käytössä" });
                 return;
             }
         }
@@ -183,7 +183,7 @@ export async function updateProfile(req: Request, res: Response): Promise<void> 
         // Päivitetään käyttäjän tiedot
         await updateUser(userId, username || user.username, email || user.email, hashedPassword);
 
-        res.status(204).json({ status: "success" });       
+        res.status(200).json({ status: "success" });
     } catch (error) {
         console.error("Käyttäjätietojen päivittämisessä ilmeni virhe:", error);
         res.status(500).json({ status: "error", message: "Palvelinvirhe käyttäjätietojen päivittämisessä: " + error });
