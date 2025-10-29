@@ -3,6 +3,7 @@ import type { Note } from '../types/Note.ts';
 import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser.ts';
 import { logoutUser } from '../api/userService.ts';
+import packageJson from '../../../package.json';
 import '../styles/page-layout.css';
 
 // Header-propsit
@@ -172,7 +173,7 @@ const Sidebar: React.FC<SidebarProps> = ({ notes, onNoteSelected }: SidebarProps
  * @returns JSX.Element
  */
 const Footer: React.FC = () => {
-    const appVersion = "1.3.4";
+    const appVersion = packageJson.version; // Haetaan versionumero package.json:sta
 
     return (
         <footer className="notig-footer">
