@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:3003/api";
+const API_URL = "http://localhost:3003/api";
 
 interface RegisterData {
     username: string;
@@ -19,6 +19,8 @@ interface AuthenticationResponse {
     userId?: string;
     username?: string;
 }
+
+axios.defaults.withCredentials = true;
 
 /**
  * Käsittelee käyttäjän rekisteröitymisen.

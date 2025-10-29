@@ -83,11 +83,32 @@ export async function login(req: Request, res: Response): Promise<void> {
             return;
         }
 
+        // Tallennetaan käyttäjän ID istuntoon
+        req.session.userId = user.id;
+
         res.status(200).json({ status: "success", userId: user.id, username: user.username });
     } catch (error) {
         console.error("Kirjautumisessa ilmeni virhe:", error);
         res.status(500).json({ status: "error", message: "Palvelinvirhe kirjautumisessa: " + error });
     }
+}
+
+/**
+ * Kirjaa käyttäjän ulos tuhoamalla istunnon.
+ * @param {Request} req - Expressin Request-olio
+ * @param {Response} res - Expressin Response-olio
+ * @returns {Promise<void>}
+ */
+export async function logout(req: Request, res: Response): Promise<void> {
+    req.session.destroy((error) => {
+        if (error) {
+            console.error("Uloskirjautumisessa ilmeni virhe:", error);
+            res.status(500).json({ status: "error", message: "Palvelinvirhe: " + error.message });
+        } else {
+            res.clearCookie("connect.sid");
+            res.status(200).json({ status: "success" });
+        }
+    });
 }
 
 /**

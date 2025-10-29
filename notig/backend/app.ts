@@ -1,24 +1,24 @@
-import express from "express";
-import { Application, Request, Response, NextFunction } from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
+import cors from "cors";
 import userRoutes from './routes/userRoutes.ts';
 import noteRoutes from './routes/noteRoutes.ts';
+import { sessionConfig } from './middleware/sessionConfig.ts';
+import { errorHandler } from './middleware/errorHandler.ts';
 
 const app: Application = express();
 
-/**
- * CORS-väliohjelmisto
- * @param {Request} req - Expressin Request-olio
- * @param {Response} res - Expressin Response-olio
- * @param {NextFunction} next - Expressin next-funktio
- */
-var cors = (req: Request, res: Response, next: NextFunction): void => {
-    res.setHeader("Access-Control-Allow-Origin", '*');
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    next();
-};
+// Väliohjelmistot
 
-app.use(cors);
+app.use(
+    cors({
+        origin: "http://localhost:5173",
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"]
+    })
+);
+app.use(sessionConfig);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -36,10 +36,7 @@ app.use((req: Request, res: Response) => {
     res.status(404).json({ status: "error", message: "Reittiä ei löytynyt" });
 });
 
-// Virhekäsittelijä
-app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error("Palvelinvirhe:", error);
-    res.status(500).json({ status: "error", message: "Palvelinvirhe" });
-});
+// Globaali virhekäsittelijä
+app.use(errorHandler);
 
 export default app;

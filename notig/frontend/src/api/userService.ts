@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:3003/api";
+const API_URL = "http://localhost:3003/api";
 
 interface UpdateUserData {
     userId: string;
@@ -22,6 +22,8 @@ interface UserResponse {
     username?: string;
     email?: string;
 }
+
+axios.defaults.withCredentials = true;
 
 /**
  * Päivittää käyttäjätiedot.
@@ -54,9 +56,13 @@ export async function deleteUser(data: DeleteUserData): Promise<UserResponse> {
 }
 
 /**
- * Kirjaa käyttäjän ulos (paikallinen toiminto)
+ * Kirjaa kirjautuneen käyttäjän ulos.
+ * Tuhoaa palvelinpuolen istunnon ja evästeen.
  * @returns {Promise<UserResponse>} - Palvelimen vastaus
  */
 export async function logoutUser(): Promise<UserResponse> {
-    return { status: "success" }; 
+    const response = await axios.post(`${API_URL}/user/logout`, {}, {
+        withCredentials: true
+    });
+    return response.data;
 }

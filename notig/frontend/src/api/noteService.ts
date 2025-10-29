@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Note } from '../types/Note.ts';
 
-const API_URL = "http://127.0.0.1:3003/api";
+const API_URL = "http://localhost:3003/api";
 
 export interface NoteData {
     title: string;
@@ -19,6 +19,8 @@ interface CreateNoteResponse {
     noteId?: string;
     message?: string;
 }
+
+axios.defaults.withCredentials = true;
 
 /**
  * Hakee käyttäjän muistiinpanot.
