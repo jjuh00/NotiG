@@ -29,12 +29,12 @@ const Dashboard: React.FC = () => {
     }, [userId]);
 
     /**
-     * Lataa käyttäjän muistiinpanot palvelimelta     */
+     * Lataa käyttäjän muistiinpanot palvelimelta     
+     */
     const loadNotes = async () => {
         try {
             const fetchedNotes = await getUserNotes(userId!);
             if (fetchedNotes.length === 0) {
-                setError("Muistiinpanojen lataus epäonnistui");
                 setNotes([]);
             } else {
                 setError('');
