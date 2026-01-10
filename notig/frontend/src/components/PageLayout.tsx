@@ -177,7 +177,7 @@ const Footer: React.FC = () => {
 
     return (
         <footer className="notig-footer">
-            <span>NotiG &copy; 2025. v.{appVersion}-beta</span>
+            <span>NotiG &copy; {new Date().getFullYear()}. v.{appVersion}-beta</span>
         </footer>
     );
 }
