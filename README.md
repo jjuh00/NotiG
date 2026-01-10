@@ -61,6 +61,6 @@ Käynnistä frontend ja backend samanaikaisesti komennolla npm run dev
 ## Teknologiapino
 
 - Frontend: React + TypeScript + Vite + React Router
-- Frontend: Express.js + SQLite3 (molemmat TypeScript:llä)
+- Backend: Express.js + SQLite3 (molemmat TypeScript:llä)
 - PDF-vienti: PDFKit
 - Muotoilu: CSS + Flaticon kuvakkeet + Google Fonts
