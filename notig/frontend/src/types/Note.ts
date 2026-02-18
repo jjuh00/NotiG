@@ -12,5 +12,5 @@ export interface Note {
     isItalic: boolean;
     isUnderline: boolean;
     createdAt: string | Date;
-    updatedAt?: string | Date | null;
+    updatedAt?: string | Date;
 }

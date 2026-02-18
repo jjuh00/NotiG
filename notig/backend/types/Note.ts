@@ -11,7 +11,7 @@ export interface Note {
     isUnderline: boolean;
     isPinned: boolean;
     createdAt?: string | Date;
-    updatedAt?: string | Date | null;
+    updatedAt?: string | Date;
 }
 
 export type NoteUpdate = Partial<Note>;

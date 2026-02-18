@@ -140,7 +140,6 @@ const NoteEditor: React.FC = () => {
                     <option value="yellow">Keltainen</option>
                     <option value="orange">Oranssi</option>
                     <option value="gray">Harmaa</option>
-                    <option value="black">Musta</option>
                 </select>
 
                 {/* Tekstin tyyli (lihavointi, kursivointi, alleviivaus) */}
