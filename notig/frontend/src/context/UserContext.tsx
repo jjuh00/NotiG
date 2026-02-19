@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 
-interface UserContextType {
+export interface UserContextType {
     userId: string | null;
     username: string | null;
     setUser: (userId: string, username: string) => void;
