@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import type { SyntheticEvent } from 'react';
+import type { SubmitEvent } from 'react';
 import { registerUser } from '../api/authenticationService.ts';
 import '../styles/register.css';
 
@@ -48,9 +48,9 @@ const Register: React.FC = () => {
 
     /**
      * Käsittelee lomakkeen lähetyksen.
-     * @param {SyntheticEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
+     * @param {SubmitEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
      */
-    const handleRegister = async(e: SyntheticEvent<HTMLFormElement>) => {
+    const handleRegister = async(e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
 

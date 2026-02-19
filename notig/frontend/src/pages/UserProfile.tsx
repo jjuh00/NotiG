@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { SyntheticEvent } from 'react';
+import type { SubmitEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser.ts';
 import { getCurrentUser, updateUserData, deleteUser } from '../api/userService.ts';
@@ -110,9 +110,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }: UserProfileProps) =
 
     /**
      * Käsittelee tallenna-napin klikkauksen.
-     * @param {SyntheticEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
+     * @param {SubmitEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
      */
-    const handleSaveClick = (e: SyntheticEvent<HTMLFormElement>) => {
+    const handleSaveClick = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
         setSuccessMessage('');

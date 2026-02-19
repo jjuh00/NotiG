@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { SyntheticEvent } from 'react';
+import type { SubmitEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from './api/authenticationService.ts';
 import useUser from './hooks/useUser.ts';
@@ -20,9 +20,9 @@ const App: React.FC = () => {
 
     /**
      * Käsittelee lomakkeen lähetyksen.
-     * @param {SyntheticEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
+     * @param {SubmitEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
      */
-    const handleLogin = async (e: SyntheticEvent<HTMLFormElement>) => {
+    const handleLogin = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
         setLoading(true);
