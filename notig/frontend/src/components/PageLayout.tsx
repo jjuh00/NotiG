@@ -54,12 +54,12 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery, onClearSearch }:
     const handleLogout = async () => {
         try {
             await logoutUser();
-            setIsUserMenuOpen(false);
-            clearUser();
-            navigate('/');
         } catch (error) {
-            console.error("Uloskirjautumisvirhe:", error);
+            console.error("Uloskirjautumisvirhe (istunto on saattanut vanhentua):", error);
         }
+        setIsUserMenuOpen(false);
+        clearUser();
+        navigate('/');
     };
 
     return (

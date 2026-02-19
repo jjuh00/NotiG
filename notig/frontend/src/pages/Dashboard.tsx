@@ -13,7 +13,7 @@ import '../styles/dashboard.css';
  */
 const Dashboard: React.FC = () => {
     const navigate = useNavigate();
-    const { userId } = useUser();
+    const { userId, clearUser } = useUser();
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [notes, setNotes] = useState<Note[]>([]);
     const [noteMenuId, setNoteMenuId] = useState<string | null>(null);
@@ -34,13 +34,15 @@ const Dashboard: React.FC = () => {
     const loadNotes = async () => {
         try {
             const fetchedNotes = await getUserNotes(userId!);
-            if (fetchedNotes.length === 0) {
-                setNotes([]);
-            } else {
-                setError('');
-                setNotes(fetchedNotes);
+            setError('');
+            setNotes(fetchedNotes.length === 0 ? [] : fetchedNotes);
+        } catch (error: any) {
+            if (error.response?.status === 401) {
+                // Käyttäjää ei ole autentikoitu (esim. jos istunto on vanhentunut), ohjataan kirjautumissivulle
+                clearUser();
+                navigate('/');
+                return;
             }
-        } catch (error) {
             console.error("Muistiinpanojen latausvirhe:", error);
             setError("Muistiinpanojen lataus epäonnistui");
         }
