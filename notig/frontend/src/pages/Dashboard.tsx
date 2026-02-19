@@ -65,7 +65,7 @@ const Dashboard: React.FC = () => {
         try {
             const fetchedNotes = await getUserNotes(userId!, query);
             if (fetchedNotes.length === 0) {
-                setError("Ei löytynyt vastaavia muistiinpanoja");
+                setError("Hakusanaa vastaavia muistiinpanoja ei löytynyt");
                 setNotes([]);
             } else {
                 setError('');

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { FormEvent } from 'react';
+import type { SyntheticEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { loginUser } from './api/authenticationService.ts';
 import useUser from './hooks/useUser.ts';
@@ -20,9 +20,9 @@ const App: React.FC = () => {
 
     /**
      * Käsittelee lomakkeen lähetyksen.
-     * @param {FormEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
+     * @param {SyntheticEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
      */
-    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    const handleLogin = async (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
         setLoading(true);
@@ -39,7 +39,7 @@ const App: React.FC = () => {
             }
         } catch (error: any) {
             console.error("Kirjautumisvirhe:", error);
-            setError("Kirjautuminen epäonnistui");
+            setError("Kirjautuminen epäonnistui. Tarkista sähköposti ja salasana");
         } finally {
             setLoading(false);
         }

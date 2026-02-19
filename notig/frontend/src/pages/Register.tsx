@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import type { FormEvent } from 'react';
+import type { SyntheticEvent } from 'react';
 import { registerUser } from '../api/authenticationService.ts';
 import '../styles/register.css';
 
@@ -48,9 +48,9 @@ const Register: React.FC = () => {
 
     /**
      * Käsittelee lomakkeen lähetyksen.
-     * @param {FormEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
+     * @param {SyntheticEvent<HTMLFormElement>} e - Lomakkeen tapahtuma
      */
-    const handleRegister = async(e: FormEvent<HTMLFormElement>) => {
+    const handleRegister = async(e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
 
@@ -74,7 +74,7 @@ const Register: React.FC = () => {
             }
         } catch (error: any) {
             console.error("Rekisteröitymisvirhe:", error);
-            setError("Rekisteröityminen epäonnistui");
+            setError("Rekisteröityminen epäonnistui. Tarkista tiedot ja yritä uudestaan");
         } finally {
             setLoading(false);
         }
