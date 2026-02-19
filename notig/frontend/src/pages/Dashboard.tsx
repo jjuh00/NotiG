@@ -51,24 +51,26 @@ const Dashboard: React.FC = () => {
      * @param {string} query - Hakukysely
      */
     const handleSearch = async (query: string) => {
+        setSearchQuery(query);
+
+        // Jos hakukysely on tyhjä, ladataan kaikki muistiinpanot uudestaan
         if (!query.trim()) {
-            setError("Haku ei voi olla tyhjä");
-            setNotes([]);
+            setError('');
+            loadNotes();
             return;
         }
-        
-        setSearchQuery(query);
+
         try {
-            const results = await getUserNotes(userId!, query);
-            if (results.length === 0) {
+            const fetchedNotes = await getUserNotes(userId!, query);
+            if (fetchedNotes.length === 0) {
                 setError("Ei löytynyt vastaavia muistiinpanoja");
                 setNotes([]);
             } else {
                 setError('');
-                setNotes(results);
+                setNotes(fetchedNotes);
             }
         } catch (error) {
-            console.error("Muistiinpanojen hakuvirhe:", error);
+            console.error("Muistiinpanojen hakuvirehe:", error);
             setError("Muistiinpanojen haku epäonnistui");
         }
     };
