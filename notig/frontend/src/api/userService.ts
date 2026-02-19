@@ -51,7 +51,10 @@ export async function getCurrentUser(userId: string): Promise<UserResponse> {
  * @returns {Promise<UserResponse>} - Palvelimen vastaus
  */
 export async function deleteUser(data: DeleteUserData): Promise<UserResponse> {
-    const response = await axios.post(`${API_URL}/user/delete`, data);
+    const response = await axios.delete(`${API_URL}/user/delete`, {
+        data: { ...data},
+        withCredentials: true
+    });
     return response.data;
 }
 

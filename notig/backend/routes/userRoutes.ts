@@ -46,6 +46,6 @@ router.put("/api/user/update", checkUserAuthentication, updateProfile);
  * Käyttäjäprofiilin poistoreitti.
  * POST /api/user/delete
  */
-router.post("/api/user/delete", checkUserAuthentication, deleteUserProfile);
+router.delete("/api/user/delete", checkUserAuthentication, deleteUserProfile);
 
 export default router;
