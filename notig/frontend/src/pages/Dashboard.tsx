@@ -87,13 +87,6 @@ const Dashboard: React.FC = () => {
     };
 
     /**
-     * Käsittelee navigoinnin uuden muistiinpanon luomiseen.
-     */
-    const handleCreateNote = () => {
-        navigate("/note/new");
-    };
-
-    /**
      * Käsittelee muistiinpanon kiinnittämisen ja kiinnityksen poistamisen.
      * @param {string} noteId - Muistiinpanon ID
      * @param {boolean} isPinned - Onko muistiinpano kiinnitetty
@@ -183,9 +176,6 @@ const Dashboard: React.FC = () => {
                 <main className="dashboard-main">
                     <div className="content-header">
                         <h1>Muistiinpanot</h1>
-                        <button className="create-note-button" onClick={handleCreateNote}>
-                            <i className="fi fi-rr-add"></i>
-                        </button>
                     </div>
 
                     {error ? (
@@ -205,9 +195,6 @@ const Dashboard: React.FC = () => {
                             </div>
                             <h2>Ei vielä muistiinpanoja</h2>
                             <p className="empty-state-message">Luo ensimmäinen muistiinpanosi nyt!</p>
-                            <button className="create-note-button" onClick={handleCreateNote}>
-                                <i className="fi fi-rr-add"></i>
-                            </button>
                         </div>
                     ) : (
                         <div className="notes-grid">

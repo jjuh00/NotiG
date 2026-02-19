@@ -41,6 +41,13 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery, onClearSearch }:
     };
 
     /**
+     * Käsittelee navigoinnin uuden muistiinpanon luomiseen.
+     */
+    const handleCreateNote = () => {
+        navigate("/note/new");
+    };
+
+    /**
      * Käsittelee navigoinnin käyttäjäasetuksiin.
      */
     const handleSettings = () => {
@@ -89,21 +96,26 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery, onClearSearch }:
             </div>
 
             <div className="header-right">
-                <div className="usermenu">
-                    <button className="usermenu-toggle" onClick={toggleUserMenu}>
-                        <i className="fi fi-sr-menu-burger"></i>
+                <div className="header-actions">
+                    <button className="create-note-button" onClick={handleCreateNote}>
+                        <i className="fi fi-rr-add"></i>
                     </button>
+                    <div className="usermenu">
+                        <button className="usermenu-toggle" onClick={toggleUserMenu}>
+                            <i className="fi fi-sr-menu-burger"></i>
+                        </button>
 
-                    {isUserMenuOpen && (
-                        <div className="usermenu-dropdown">
-                            <button className="usermenu-item" onClick={handleSettings}>
-                                <span>Asetukset</span>
-                            </button>
-                            <button className="usermenu-item" onClick={handleLogout}>
-                                <span>Kirjaudu ulos</span>
-                            </button>
-                        </div>
-                    )}
+                        {isUserMenuOpen && (
+                            <div className="usermenu-dropdown">
+                                <button className="usermenu-item" onClick={handleSettings}>
+                                    <span>Asetukset</span>
+                                </button>
+                                <button className="usermenu-item" onClick={handleLogout}>
+                                    <span>Kirjaudu ulos</span>
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </header>
