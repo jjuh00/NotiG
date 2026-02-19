@@ -119,7 +119,7 @@ export async function logout(req: Request, res: Response): Promise<void> {
  */
 export async function getUserById(req: Request, res: Response): Promise<void> {
     try {
-        const { id } = req.params;
+        const id = req.params.id as string;
 
         if (!id) {
             res.status(400).json({ status: "error", message: "Käyttäjä ID puuttuu" });
@@ -243,7 +243,7 @@ export async function deleteUserProfile(req: Request, res: Response): Promise<vo
         await deleteUserNotes(userId);
         // Poistetaan käyttäjä
         await deleteUser(userId);
-        res.status(204).json({ status: "success" });
+        res.status(200).json({ status: "success" });
     } catch (error) {
         console.error("Käyttäjän poistamisessa ilmeni virhe:", error);
         res.status(500).json({ status: "error", message: "Palvelinvirhe käyttäjän poistamisessa: " + error });

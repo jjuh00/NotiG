@@ -1,11 +1,12 @@
 import session from "express-session";
+import crypto from "crypto";
 
 /**
  * Määritellee express-session väliohjelmiston (middlewaren) asetukset.
  * @returns {session.SessionOptions} - Määritelty session-instanssi
  */
 export const sessionConfig = session({
-    secret: "408ff26aee3124c5e1ff7df4",
+    secret: crypto.randomBytes(32).toString("hex"),
     resave: false,
     saveUninitialized: false,
     cookie: {

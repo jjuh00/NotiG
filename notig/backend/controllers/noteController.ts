@@ -14,7 +14,7 @@ import PDFDocument from "pdfkit";
  */
 export async function getNotesByUser(req: Request, res: Response): Promise<void> {
     try {
-        const { userId } = req.params;
+        const userId = req.params.userId as string;
         const searchQuery = req.query.search as string | undefined;
 
         if (!userId) {
@@ -44,7 +44,7 @@ export async function getNotesByUser(req: Request, res: Response): Promise<void>
  * @return {Promise<void>}
  */
 export async function getNoteHandler(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     try {
         const singleNote = await getNoteById(id);
@@ -108,7 +108,7 @@ export async function createNoteHandler(req: Request, res: Response): Promise<vo
  * @return {Promise<void>}
  */
 export async function updateNoteHandler(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const updates: NoteUpdate = req.body;
 
     try {
@@ -133,7 +133,7 @@ export async function updateNoteHandler(req: Request, res: Response): Promise<vo
  * @return {Promise<void>}
  */
 export async function deleteNoteHandler(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     try {
         const note = await getNoteById(id);
@@ -143,7 +143,7 @@ export async function deleteNoteHandler(req: Request, res: Response): Promise<vo
         }
 
         await deleteNote(id);
-        res.status(204).json({ status: "success" });
+        res.status(200).json({ status: "success" });
     } catch (error) {
         console.error("Muistiinpanon poistamisessa ilmeni virhe:", error);
         res.status(500).json({ status: "error", message: "Palvelinvirhe muistiinpanon poistamisessa: " + error });
@@ -157,7 +157,7 @@ export async function deleteNoteHandler(req: Request, res: Response): Promise<vo
  * @return {Promise<void>}
  */
 export async function generateNotePdf(req: Request, res: Response): Promise<void> {
-    const { id } = req.params;
+    const id = req.params.id as string;
 
     try {
         const dbNote = await getNoteById(id);
