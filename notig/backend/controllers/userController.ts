@@ -100,7 +100,7 @@ export async function login(req: Request, res: Response): Promise<void> {
  * @returns {Promise<void>}
  */
 export async function logout(req: Request, res: Response): Promise<void> {
-    req.session.destroy((error) => {
+    req.session.destroy((error: Error | null) => {
         if (error) {
             console.error("Uloskirjautumisessa ilmeni virhe:", error);
             res.status(500).json({ status: "error", message: "Palvelinvirhe: " + error.message });

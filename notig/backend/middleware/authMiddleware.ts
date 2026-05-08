@@ -1,12 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import session from "express-session";
-
-// Laajennetaan session-tyyppiä, jotta sen kanssa voidaan käyttää userId:tä
-declare module "express-session" {
-    interface SessionData {
-        userId: number;
-    }
-}
 
 /**
  * Väliohjelmisto (eli middleware) käyttäjän autentikointiin.
@@ -21,7 +13,6 @@ export const checkUserAuthentication = (req: Request, res: Response, next: NextF
     if (req.session && req.session.userId) {
         next();
     } else {
-        // console.log(req.session.userId);
         res.status(401).json({ status: "error", message: "Käyttäjä ei ole kirjautunut sisään" });
     }
 }
