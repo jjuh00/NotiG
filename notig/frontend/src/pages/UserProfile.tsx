@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useUser from '../hooks/useUser.ts';
 import { getCurrentUser, updateUserData, deleteUser } from '../api/userService.ts';
 import '../styles/user-profile.css';
+import '../styles/modal.css';
 
 interface ProfileData {
     username: string;

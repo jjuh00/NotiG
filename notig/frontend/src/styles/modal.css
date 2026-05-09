@@ -1,0 +1,126 @@
+/* Yhteiset modal-tyylit */
+
+.modal-overlay {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    animation: modal-fade-in 0.25s ease;
+}
+
+@keyframes modal-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    padding: 2rem;
+    max-width: 420px;
+    width: 90%;
+    background: #2c2c2d;
+    border: 1px solid darkslategray;
+    border-radius: 12px;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+    animation: modal-slide-up 0.3s ease;
+}
+
+@keyframes modal-slide-up {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-title {
+    margin-bottom: 0.5rem;
+    color: gold;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.modal-description {
+    margin-bottom: 1.5rem;
+    color: lightgray;
+    font-size: 14px;
+}
+
+.modal-group {
+    margin-bottom: 1.5rem;
+}
+
+.modal-buttons {
+    display: flex;
+    margin-top: 1.5rem;
+    gap: 1rem;
+}
+
+.modal-cancel-button {
+    padding: 0.875rem;
+    flex: 1;
+    background-color: #1e1f1f;
+    border: 2px solid darkslategray;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.modal-cancel-button i {
+    color: lightgray;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.modal-cancel-button:hover:not(:disabled) {
+    background-color: darkslategray;
+    border-color: darkgray;
+}
+
+.modal-cancel-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.modal-confirm-button {
+    padding: 0.875rem;
+    flex: 1;
+    background: linear-gradient(135deg, gold 0%, orange 100%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.modal-confirm-button i {
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.modal-confirm-button:hover:not(:disabled) {
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
+    transform: translateY(-1px);
+}
+
+.modal-confirm-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.modal-confirm-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
